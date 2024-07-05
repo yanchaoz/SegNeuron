@@ -21,19 +21,27 @@ The datasets required for model development and validation are as provided [here
 ## Training
 ```
 cd /Pretrain
+```
+```
 python pretrain.py
 ```
 ```
 cd /Train_and_Inference
+```
+```
 python supervised_train.py
 ```
 ## Inference
 ```
 cd /Train_and_Inference
+```
+```
 python inference.py
 ```
 ```
 cd /Postprocess
+```
+```
 python FRMC_post.py
 ```
 ## Acknowledgement
