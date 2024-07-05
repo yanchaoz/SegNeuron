@@ -4,7 +4,7 @@ Official implementations, datasets and trained models for "SegNeuron: 3D Neuron 
 ## Datasets and Models
 The datasets required for model development and validation are available [here](https://huggingface.co/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron).
 ### Table: Details of EMNeuron
-
+<div style="font-size: 0.8em;">
 | Dataset              | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) | Dataset               | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) |
 |----------------------|------------|----------------------|------------------|--------------------|-----------------------|------------|----------------------|------------------|--------------------|
 | 1. ZFinch       | SBF-SEM    | 9, 9, 20             | 3635             | 131                | 9. HBrain         | FIB-SEM    | 8, 8, 8              | 3072             | 844                |
