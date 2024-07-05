@@ -3,7 +3,7 @@ Official implementations, datasets and trained models for "SegNeuron: 3D Neuron 
  Any EM Volume with a Generalist Model"
 ## Datasets and Models
 The datasets required for model development and validation are available [here](https://huggingface.co/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron).
-#### Table: Details of EMNeuron
+### Table: Details of EMNeuron
 **_Underlined_ items represent in-house datasets.**
 <div style="font-size: 0.5em;">
 
