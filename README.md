@@ -10,6 +10,8 @@ https://huggingface.co/yanchaoz/SegNeuron
 ```python
 cd /Pretrain
 python pretrain.py
+```
+```python
 cd Train_and_Inference
 python supervised_train.py
 ```
@@ -17,6 +19,8 @@ python supervised_train.py
 ```python
 cd Train_and_Inference
 python inference.py
+```
+```python
 cd Postprocess
 python FRMC_post.py
 ```
