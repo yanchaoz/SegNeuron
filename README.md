@@ -8,15 +8,15 @@ The datasets required for model development and validation are as provided [here
 
 | Dataset              | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) | Dataset               | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) |
 |----------------------|------------|----------------------|------------------|--------------------|-----------------------|------------|----------------------|------------------|--------------------|
-| 1. ZFinch[^1]        | SBF-SEM    | 9, 9, 20             | 3635             | 131                | 9. HBrain[^9]         | FIB-SEM    | 8, 8, 8              | 3072             | 844                |
-| 2. ZFish[^2]         | SBF-SEM    | 9, 9, 20             | 1674             | -                  | 10. FIB25[^10]        | FIB-SEM    | 8, 8, 8              | 312              | 312                |
-| 3. _vEM1_            | ATUM-SEM   | 8, 8, 50             | 1205             | 157                | 11. Minnie[^11]       | ssTEM      | 8, 8, 40             | 2096             | -                  |
-| 4. _vEM2_            | ATUM-SEM   | 8, 8, 30             | 1329             | 281                | 12. Pinky[^12]        | ssTEM      | 8, 8, 40             | 1165             | 117                |
-| 5. _vEM3_            | ATUM-SEM   | 8, 8, 40             | 1301             | 253                | 13. FAFB[^13]         | ssTEM      | 8, 8, 40             | 2625             | 577                |
-| 6. MitoEM[^6]        | ATUM-SEM   | 8, 8, 30             | 1048             | -                  | 14. Basil[^14]        | ssTEM      | 8, 8, 40             | 23               | 23                 |
-| 7. H01[^7]           | ATUM-SEM   | 8, 8, 30             | 1166             | 118                | 15. Harris[^15]       | others     | 6, 6, 50             | 30               | 30                 |
-| 8. Kasthuri[^8]      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                | 16. _vEM4_            | others     | 8, 8, 20             | 45               | 45                 |
-|----------------------|------------|----------------------|------------------|--------------------|-----------------------|------------|----------------------|------------------|--------------------|
+| 1. ZFinch       | SBF-SEM    | 9, 9, 20             | 3635             | 131                | 9. HBrain         | FIB-SEM    | 8, 8, 8              | 3072             | 844                |
+| 2. ZFish        | SBF-SEM    | 9, 9, 20             | 1674             | -                  | 10. FIB25        | FIB-SEM    | 8, 8, 8              | 312              | 312                |
+| 3. _vEM1_            | ATUM-SEM   | 8, 8, 50             | 1205             | 157                | 11. Minnie       | ssTEM      | 8, 8, 40             | 2096             | -                  |
+| 4. _vEM2_            | ATUM-SEM   | 8, 8, 30             | 1329             | 281                | 12. Pinky        | ssTEM      | 8, 8, 40             | 1165             | 117                |
+| 5. _vEM3_            | ATUM-SEM   | 8, 8, 40             | 1301             | 253                | 13. FAFB         | ssTEM      | 8, 8, 40             | 2625             | 577                |
+| 6. MitoEM        | ATUM-SEM   | 8, 8, 30             | 1048             | -                  | 14. Basil        | ssTEM      | 8, 8, 40             | 23               | 23                 |
+| 7. H01           | ATUM-SEM   | 8, 8, 30             | 1166             | 118                | 15. Harris       | others     | 6, 6, 50             | 30               | 30                 |
+| 8. Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                | 16. _vEM4_            | others     | 8, 8, 20             | 45               | 45                 |
+
 ## Training
 ```
 cd /Pretrain
