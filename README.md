@@ -19,12 +19,14 @@ The datasets required for model development and validation are as provided [here
 | 8. Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                | 16. _vEM4_            | others     | 8, 8, 20             | 45               | 45                 |
 
 ## Training
+### 1. Pretraining
 ```
 cd /Pretrain
 ```
 ```
 python pretrain.py
 ```
+### 2. Supervised Training
 ```
 cd /Train_and_Inference
 ```
@@ -32,12 +34,14 @@ cd /Train_and_Inference
 python supervised_train.py
 ```
 ## Inference
+### 1. Affinity Inference
 ```
 cd /Train_and_Inference
 ```
 ```
 python inference.py
 ```
+### 2. Instance Segmentation
 ```
 cd /Postprocess
 ```
