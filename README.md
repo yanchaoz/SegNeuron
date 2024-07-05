@@ -4,7 +4,7 @@ Official implementations, datasets and trained models for "SegNeuron: 3D Neuron 
 ## Dataset
 The datasets required for model development and validation are as provided [here](https://huggingface.co/yanchaoz/EMNeuron).
 ## Model
-The trained model can be download [here](https://huggingface.co/datasets/yanchaoz/SegNeuron).
+The trained model can be download [here](https://huggingface.co/yanchaoz/SegNeuron).
 https://huggingface.co/yanchaoz/SegNeuron
 ## Training
 ```python
