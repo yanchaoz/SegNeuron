@@ -4,7 +4,7 @@ Official implementations, datasets and trained models for "SegNeuron: 3D Neuron 
 ## Datasets and Models
 The datasets required for model development and validation are available [here](https://huggingface.co/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron).
 ### Table: Details of EMNeuron
-**<Underlined> items represent in-house datasets.**
+**<u>Underlined</u> items represent in-house datasets.**
 <div style="font-size: 0.5em;">
 
 | Dataset              | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) | Dataset               | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) |
