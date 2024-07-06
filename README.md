@@ -2,7 +2,7 @@
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model"
 ## Datasets and Models
-The datasets required for model development and validation are available [here](https://huggingface.co/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron).
+The datasets required for model development and validation are available [here](https://huggingface.co/datasets/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron).
 ### Table: Details of EMNeuron
 
 <div style="font-size: 0.8em;">
