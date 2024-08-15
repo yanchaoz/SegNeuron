@@ -17,18 +17,17 @@ The datasets required for model development and validation are available [here](
 | 6. MitoEM        | ATUM-SEM   | 8, 8, 30             | 1048             | -                  | 14. Basil        | ssTEM      | 8, 8, 40             | 23               | 23                 |
 | 7. H01           | ATUM-SEM   | 8, 8, 30             | 1166             | 118                | 15. Harris       | others     | 6, 6, 50             | 30               | 30                 |
 | 8. Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                | 16. _vEM4_            | others     | 8, 8, 20             | 45               | 45                 |
-## Dependencies
 ## Training
 ### 1. Pretraining
 ```
-cd /Pretrain
+cd Pretrain
 ```
 ```
 python pretrain.py
 ```
 ### 2. Supervised Training
 ```
-cd /Train_and_Inference
+cd Train_and_Inference
 ```
 ```
 python supervised_train.py
@@ -36,14 +35,14 @@ python supervised_train.py
 ## Inference
 ### 1. Affinity Inference
 ```
-cd /Train_and_Inference
+cd Train_and_Inference
 ```
 ```
 python inference.py
 ```
 ### 2. Instance Segmentation
 ```
-cd /Postprocess
+cd Postprocess
 ```
 ```
 python FRMC_post.py
