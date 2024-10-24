@@ -17,11 +17,9 @@ from collections import OrderedDict
 import torch
 import torch.nn as nn
 from pretrain_provider import Provider
-from valid_provider import Provider_valid
 from utils.show import show_bound
 from model.Mnet_pretrain import MNet
 from utils.utils import setup_seed
-from loss.loss import WeightedBCE, WeightedMSE
 import torch.nn.functional as F
 
 
@@ -79,8 +77,6 @@ def load_dataset(cfg):
     print('Caching datasets ... ', flush=True)
     t1 = time.time()
     train_provider = Provider('train', cfg)
-    valid_provider = [Provider_valid(cfg, valid_data='snemi'), Provider_valid(cfg, valid_data='cremi-C'),
-                      Provider_valid(cfg, valid_data='fib25')]
     print('Done (time: %.2fs)' % (time.time() - t1))
     return train_provider, valid_provider
 
@@ -150,22 +146,13 @@ def calculate_lr(iters):
     return current_lr
 
 
-def loop(cfg, train_provider, valid_provider, model, optimizer, iters, writer):
+def loop(cfg, train_provider, model, optimizer, iters, writer):
     f_loss_txt = open(os.path.join(cfg.record_path, 'loss.txt'), 'a')
-    f_valid_txt = open(os.path.join(cfg.record_path, 'valid.txt'), 'a')
     rcd_time = []
     sum_time = 0
     sum_loss = 0
     sum_labeled_loss = 0
     sum_unlabel_loss = 0
-    device = torch.device('cuda:0')
-
-    if cfg.TRAIN.loss_func == 'MSELoss':
-        criterion = WeightedBCE()
-    elif cfg.TRAIN.loss_func == 'BCELoss':
-        criterion = WeightedMSE()
-    else:
-        raise AttributeError("NO this criterion")
 
     while iters <= cfg.TRAIN.total_iters:
         # train
@@ -240,7 +227,6 @@ def loop(cfg, train_provider, valid_provider, model, optimizer, iters, writer):
             torch.save(states, os.path.join(cfg.save_path, 'model-%06d.ckpt' % iters))
             print('***************save modol, iters = %d.***************' % (iters), flush=True)
     f_loss_txt.close()
-    f_valid_txt.close()
 
 
 if __name__ == "__main__":
@@ -265,12 +251,12 @@ if __name__ == "__main__":
 
     if args.mode == 'train':
         writer = init_project(cfg)
-        train_provider, valid_provider = load_dataset(cfg)
+        train_provider = load_dataset(cfg)
         model = build_model(cfg, writer)
         optimizer = torch.optim.Adam(model.parameters(), lr=cfg.TRAIN.base_lr, betas=(0.9, 0.999),
                                      eps=0.01, weight_decay=1e-6, amsgrad=True)
         init_iters = 0
-        loop(cfg, train_provider, valid_provider, model, optimizer, init_iters, writer)
+        loop(cfg, train_provider, model, optimizer, init_iters, writer)
         writer.close()
     else:
         pass
