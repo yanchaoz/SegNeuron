@@ -182,7 +182,7 @@ class Train(Dataset):
                 elif type_dataset_r2 == 8:
                     r2 = random.randint(67, 71)  # scn
                 elif type_dataset_r2 == 9:
-                    r2 = random.randint(72, 75)  # scn
+                    r2 = random.randint(72, 75)  # fish
 
                 used_data = self.dataset[r2]
                 used_label = self.labels[r2]
