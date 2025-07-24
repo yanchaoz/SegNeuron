@@ -22,7 +22,7 @@ The datasets required for model development and validation are available [here](
 | 8. Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                | 16. _vEM4_            | others     | 8, 8, 20             | 45               | 45                 |
 
 ## A typical pipeline accelerated by SegNeuron
-The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (xy resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
+The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
 <p align="center">
   <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
 </p>
