@@ -2,6 +2,13 @@
 # SegNeuron  <img src="/Figures/logo.png" alt="logo" width="50" style="vertical-align: middle;"/> 
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
+
+## A typical pipeline accelerated by SegNeuron
+The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
+<p align="center">
+  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline", width="900"/>
+</p>
+
 ## Environments
 We have packaged all the dependencies into Connect.tar.gz, which can be directly downloaded for easy access [here](https://huggingface.co/yanchaoz/SegNeuron).
 ## Datasets and Models
@@ -21,11 +28,6 @@ The datasets required for model development and validation are available [here](
 | 7. H01           | ATUM-SEM   | 8, 8, 30             | 1166             | 118                | 15. Harris       | others     | 6, 6, 50             | 30               | 30                 |
 | 8. Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                | 16. _vEM4_            | others     | 8, 8, 20             | 45               | 45                 |
 
-## A typical pipeline accelerated by SegNeuron
-The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
-<p align="center">
-  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
-</p>
 
 ## Training
 ### 1. Pretraining
