@@ -1,4 +1,4 @@
-# SegNeuron
+# <img src="./Figure/logo.png" alt="logo" width="30"/>  SegNeuron
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
 ## Environments
@@ -49,6 +49,10 @@ cd Postprocess
 ```
 python FRMC_post.py
 ```
-## Vsiual Results of the Zero-shot Segmentation Performance on EM volumes
+## A typical pipeline accelerated by SegNeuron
+The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (xy resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
+<p align="center">
+  <img src="./Figure/pipeline.png"  alt="SegNeuron Logo" width="200"/>
+</p>
 ## Acknowledgement
 This code is based on [SSNS-Net](https://github.com/weih527/SSNS-Net) (IEEE TMI'22) by Huang Wei et al. The postprocessing tools are based on [constantinpape/elf](https://github.com/constantinpape/elf). Should you have any further questions, please let us know. Thanks again for your interest.
