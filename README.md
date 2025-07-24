@@ -1,5 +1,5 @@
 
-SegNeuron # <img src="/Figures/logo.png" alt="logo" width="40" style="vertical-align: middle;"/> 
+# SegNeuron  <img src="/Figures/logo.png" alt="logo" width="40" style="vertical-align: middle;"/> 
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
 ## Environments
