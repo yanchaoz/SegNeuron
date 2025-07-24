@@ -3,10 +3,10 @@
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
 
-## A typical pipeline accelerated by SegNeuron
+## A Typical Segmentation Pipeline Accelerated by SegNeuron
 The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
 <p align="center">
-  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline", width="900"/>
+  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
 </p>
 
 ## Environments
