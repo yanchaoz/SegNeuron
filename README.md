@@ -1,4 +1,5 @@
-# <img src="/Figures/logo.png" alt="logo" width="50"/>  SegNeuron
+
+# <img src="/Figures/logo.png" alt="logo" width="50" style="vertical-align: middle;"/> SegNeuron
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
 ## Environments
@@ -19,6 +20,13 @@ The datasets required for model development and validation are available [here](
 | 6. MitoEM        | ATUM-SEM   | 8, 8, 30             | 1048             | -                  | 14. Basil        | ssTEM      | 8, 8, 40             | 23               | 23                 |
 | 7. H01           | ATUM-SEM   | 8, 8, 30             | 1166             | 118                | 15. Harris       | others     | 6, 6, 50             | 30               | 30                 |
 | 8. Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                | 16. _vEM4_            | others     | 8, 8, 20             | 45               | 45                 |
+
+## A typical pipeline accelerated by SegNeuron
+The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (xy resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
+<p align="center">
+  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="800"/>
+</p>
+
 ## Training
 ### 1. Pretraining
 ```
@@ -49,10 +57,6 @@ cd Postprocess
 ```
 python FRMC_post.py
 ```
-## A typical pipeline accelerated by SegNeuron
-The general-purpose neuronal segmentation model, SegNeuron, achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (xy resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models.
-<p align="center">
-  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="800"/>
-</p>
+
 ## Acknowledgement
 This code is based on [SSNS-Net](https://github.com/weih527/SSNS-Net) (IEEE TMI'22) by Huang Wei et al. The postprocessing tools are based on [constantinpape/elf](https://github.com/constantinpape/elf). Should you have any further questions, please let us know. Thanks again for your interest.
