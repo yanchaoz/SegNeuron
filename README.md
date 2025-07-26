@@ -28,7 +28,7 @@ The datasets required for model development and validation are available [here](
 | _vEM3_ (scn)            | ATUM-SEM   | 8, 8, 40             | 1301             | 253                |  FAFB         | ssTEM      | 8, 8, 40             | 2625             | 577                |
 |MitoEM        | ATUM-SEM   | 8, 8, 30             | 1048             | -                  |  Basil        | ssTEM      | 8, 8, 40             | 23               | 23                 |
 | H01           | ATUM-SEM   | 8, 8, 30             | 1166             | 118                |  Harris       | others     | 6, 6, 50             | 30               | 30                 |
-| Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                |  _vEM4_(ionsem)            | others     | 8, 8, 20             | 45               | -                  |
+| Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                |  _vEM4_ (ionsem)            | others     | 8, 8, 20             | 45               | -                  |
 
 </div>
 
