@@ -19,7 +19,7 @@ The datasets required for model development and validation are available [here](
 
 <div style="font-size: 0.6em;">
 
-| Dataset              | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) | Dataset               | Modality   | Res.($nm$) ($x/y,z$) | Total voxels (M) | Labeled voxels (M) |
+| Dataset              | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) | Dataset               | Modality   | Res.($nm$) ($x\/y,z$) | Total voxels (M) | Labeled voxels (M) |
 |----------------------|------------|----------------------|------------------|--------------------|-----------------------|------------|----------------------|------------------|--------------------|
 | ZFinch       | SBF-SEM    | 9, 9, 20             | 3635             | 131                | HBrain         | FIB-SEM    | 8, 8, 8              | 3072             | 844                |
 | Layer4        | SBF-SEM    | 9, 9, 20             | 1674             | -                  | FIB25        | FIB-SEM    | 8, 8, 8              | 312              | 312                |
