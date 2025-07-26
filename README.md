@@ -19,16 +19,16 @@ The datasets required for model development and validation are available [here](
 
 <div style="font-size: 0.6em;">
 
-| Dataset              | Modality   | Res.($nm$) ($x,y,z$) | Total voxels (M) | Labeled voxels (M) | Dataset               | Modality   | Res.($nm$) ($x\/y,z$) | Total voxels (M) | Labeled voxels (M) |
+| Dataset              | Modality   | Res.($nm$) ($x\/y,z$) | Total voxels (M) | Labeled voxels (M) | Dataset               | Modality   | Res.($nm$) ($x\/y,z$) | Total voxels (M) | Labeled voxels (M) |
 |----------------------|------------|----------------------|------------------|--------------------|-----------------------|------------|----------------------|------------------|--------------------|
-| ZFinch       | SBF-SEM    | 9, 9, 20             | 3635             | 131                | HBrain         | FIB-SEM    | 8, 8, 8              | 3072             | 844                |
-| Layer4        | SBF-SEM    | 9, 9, 20             | 1674             | -                  | FIB25        | FIB-SEM    | 8, 8, 8              | 312              | 312                |
-| _vEM1_ (adwt)            | ATUM-SEM   | 8, 8, 50             | 1205             | 157                |  Minnie       | ssTEM      | 8, 8, 40             | 2096             | -                  |
-| _vEM2_ (zfish)            | ATUM-SEM   | 8, 8, 30             | 1329             | 281                |  Pinky        | ssTEM      | 8, 8, 40             | 1165             | 117                |
-| _vEM3_ (scn)            | ATUM-SEM   | 8, 8, 40             | 1301             | 253                |  FAFB         | ssTEM      | 8, 8, 40             | 2625             | 577                |
-|MitoEM        | ATUM-SEM   | 8, 8, 30             | 1048             | -                  |  Basil        | ssTEM      | 8, 8, 40             | 23               | 23                 |
-| H01           | ATUM-SEM   | 8, 8, 30             | 1166             | 118                |  Harris       | others     | 6, 6, 50             | 30               | 30                 |
-| Kasthuri      | ATUM-SEM   | 6, 6, 30             | 1526             | 478                |  _vEM4_ (ionsem)            | others     | 8, 8, 20             | 45               | -                  |
+| ZFinch       | SBF-SEM    | 9, 20             | 3635             | 131                | HBrain         | FIB-SEM    | 8, 8              | 3072             | 844                |
+| Layer4        | SBF-SEM    | 9, 20             | 1674             | -                  | FIB25        | FIB-SEM    | 8, 8              | 312              | 312                |
+| _vEM1_ (adwt)            | ATUM-SEM   | 8, 50             | 1205             | 157                |  Minnie       | ssTEM      | 8, 40             | 2096             | -                  |
+| _vEM2_ (zfish)            | ATUM-SEM   | 8, 30             | 1329             | 281                |  Pinky        | ssTEM      | 8, 40             | 1165             | 117                |
+| _vEM3_ (scn)            | ATUM-SEM   | 8, 40             | 1301             | 253                |  FAFB         | ssTEM      | 8, 40             | 2625             | 577                |
+|MitoEM        | ATUM-SEM   | 8, 30             | 1048             | -                  |  Basil        | ssTEM      | 8, 40             | 23               | 23                 |
+| H01           | ATUM-SEM   | 8, 30             | 1166             | 118                |  Harris       | others     | 6, 50             | 30               | 30                 |
+| Kasthuri      | ATUM-SEM   | 6, 30             | 1526             | 478                |  _vEM4_ (ionsem)            | others     | 8, 20             | 45               | -                  |
 
 </div>
 
