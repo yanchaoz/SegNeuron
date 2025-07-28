@@ -64,7 +64,7 @@ cd Postprocess
 ```
 python FRMC_post.py
 ```
-### Zero-shot Segmentation Examples on [MitoEM](https://mitoem.grand-challenge.org/) and [Wildenberg](https://bossdb.org/project/wildenberg2023) (scale bar: 2 um)
+### 3. Zero-shot Segmentation Examples on [MitoEM](https://mitoem.grand-challenge.org/) and [Wildenberg](https://bossdb.org/project/wildenberg2023) (scale bar: 2 um)
 <p align="center">
   <img src="/Figures/example.png"  alt="" width="700"/>
 </p>
