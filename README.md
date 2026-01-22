@@ -3,7 +3,17 @@
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
 
- 
+
+ <p align="center">
+  <!-- Visitors -->
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=yanchaoz.SegNeuron" alt="visitors" />
+
+  <!-- GitHub Stars -->
+  <img src="https://img.shields.io/github/stars/yanchaoz/SegNeuron?style=social" alt="Stars" />
+
+  <!-- License -->
+  <img src="https://img.shields.io/github/license/yanchaoz/SegNeuron" alt="License" />
+</p>
 
 ## How does SegNeuron speed up neuron segmentation in EM volumes?
 The general-purpose model achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models. We are currently working on developing a user-friendly tool based on Napari.
