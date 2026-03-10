@@ -3,10 +3,10 @@
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
 
-![GitHub stars](https://img.shields.io/github/stars/yanchaoz/OrgMIM?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yanchaoz/OrgMIM?style=social)
-![Visitors](https://visitor-badge.laobi.icu/badge?page_id=yanchaoz.OrgMIM)
-[![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-OrgMIM--datasets-yellow)](https://huggingface.co/datasets/yanchaoz/OrgMIM-datasets)
+![GitHub stars](https://img.shields.io/github/stars/yanchaoz/SegNeuron?style=social)
+![GitHub forks](https://img.shields.io/github/forks/yanchaoz/SegNeuron?style=social)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=yanchaoz.SegNeuron)
+[![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-EMNeuron-yellow)](https://huggingface.co/datasets/yanchaoz/EMNeuron)
 
 
 ## How does SegNeuron speed up neuron segmentation in EM volumes?
