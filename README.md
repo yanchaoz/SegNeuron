@@ -8,7 +8,7 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=yanchaoz.SegNeuron)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-EMNeuron-yellow)](https://huggingface.co/datasets/yanchaoz/EMNeuron)
 
-## 📰 News
+## News
 
 - **2026-03** — Updated neuron annotation data has been added to Hugging Face 🤗.
 
