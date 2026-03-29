@@ -10,7 +10,7 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
 
 ## News
 
-- **2026-03** — Updated labeled datasets (Mira-fish&Mira-scn) have been added to Hugging Face.
+- **2026-03** — Updated labeled datasets (Mira-fish&Mira-scn) have been added to Huggingface.
 
 
 ## How does SegNeuron speed up neuron segmentation in EM volumes?
