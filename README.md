@@ -8,10 +8,7 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=yanchaoz.SegNeuron)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-EMNeuron-yellow)](https://huggingface.co/datasets/yanchaoz/EMNeuron)
 
-## News
-
-- **2026-03** — Updated labeled datasets (Mira-fish&Mira-scn) have been added to Huggingface.
-
+ 
 
 ## How does SegNeuron speed up neuron segmentation in EM volumes?
 The general-purpose model achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: 5–10 nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models. We are currently working on developing a user-friendly tool based on Napari.
