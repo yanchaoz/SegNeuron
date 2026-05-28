@@ -19,7 +19,20 @@ The general-purpose model achieves outstanding reconstruction performance on ent
 ## Environments
 We have packaged all the dependencies into Connect.tar.gz, which can be directly downloaded for easy access [here](https://huggingface.co/yanchaoz/SegNeuron).
 ## Datasets and Models
-The datasets required for model development and validation are available [here](https://huggingface.co/datasets/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron).
+The datasets required for model development and validation are available [here](https://huggingface.co/datasets/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron). If you use any of the following vEM datasets in your work, please also cite the corresponding original publications:
+
+- **vEM1: MiRA-ADWT**  
+  *Ultrastructural Alterations of Dendritic Morphology in the Prefrontal Cortex of Alzheimer’s Disease Model Rats*
+
+- **vEM2: MiRA-ZF**  
+  *Multiplexed Neuromodulatory-Type-Annotated EM-Reconstruction of Larval Zebrafish*
+
+- **vEM3: MiRA-SCN**  
+  *Connectomic Organization of the Suprachiasmatic Nucleus*
+
+- **vEM4: MiRA-PIB**  
+  *PIBE: Parallel ion beam etching of sections collected on wafer for ultra large-scale connectomics*
+
 ### Table: Details of EMNeuron
 
 <div style="font-size: 0.6em;">
