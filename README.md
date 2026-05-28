@@ -22,16 +22,16 @@ We have packaged all the dependencies into Connect.tar.gz, which can be directly
 The datasets required for model development and validation are available [here](https://huggingface.co/datasets/yanchaoz/EMNeuron). The trained models can be download [here](https://huggingface.co/yanchaoz/SegNeuron). If you use any of the following vEM datasets in your work, please also cite the corresponding original publications:
 
 - **vEM1: MiRA-ADWT**  
-  *Ultrastructural Alterations of Dendritic Morphology in the Prefrontal Cortex of Alzheimer’s Disease Model Rats*
+  *Ultrastructural Alterations of Dendritic Morphology in the Prefrontal Cortex of Alzheimer’s Disease Model Rats* [link](https://link.springer.com/article/10.1007/s12264-026-01606-5)
 
 - **vEM2: MiRA-ZF**  
-  *Multiplexed Neuromodulatory-Type-Annotated EM-Reconstruction of Larval Zebrafish*
+  *Multiplexed Neuromodulatory-Type-Annotated EM-Reconstruction of Larval Zebrafish* [link](https://www.biorxiv.org/content/10.1101/2025.06.12.659365v1)
 
 - **vEM3: MiRA-SCN**  
-  *Connectomic Organization of the Suprachiasmatic Nucleus*
+  *Connectomic Organization of the Suprachiasmatic Nucleus* [link](https://www.biorxiv.org/content/10.1101/2024.10.20.619252v1)
 
-- **vEM4: MiRA-PIB**  
-  *PIBE: Parallel ion beam etching of sections collected on wafer for ultra large-scale connectomics*
+- **vEM4: MiRA-PIB**   
+  *PIBE: Parallel ion beam etching of sections collected on wafer for ultra large-scale connectomics* [link](https://www.biorxiv.org/content/10.1101/2025.04.25.650569v4)
 
 ### Table: Details of EMNeuron
 
