@@ -31,7 +31,7 @@ The datasets required for model development and validation are available [here](
   *Connectomic Organization of the Suprachiasmatic Nucleus* [link](https://www.biorxiv.org/content/10.1101/2024.10.20.619252v1)
 
 - **vEM4: MiRA-PIB**   
-  *PIBE: Parallel ion beam etching of sections collected on wafer for ultra large-scale connectomics* [link](https://www.biorxiv.org/content/10.1101/2025.04.25.650569v4)
+  *PIB: Parallel ion beam etching of sections collected on wafer for ultra large-scale connectomics* [link](https://www.biorxiv.org/content/10.1101/2025.04.25.650569v4)
 
 ### Table: Details of EMNeuron
 
