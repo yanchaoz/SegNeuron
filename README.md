@@ -16,7 +16,7 @@ The general-purpose model achieves outstanding reconstruction performance on ent
   <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
 </p>
 
-A self-contained [Google Colab notebook](Colab/SegNeuron_Colab_Inference.ipynb) is provided for easily running SegNeuron inference and postprocessing on custom 3D EM volumes without cloning the repository or importing external Python files.
+A self-contained [Google Colab notebook](SegNeuron_Colab_Inference.ipynb) is provided for easily running SegNeuron inference and postprocessing on custom 3D EM volumes without cloning the repository or importing external Python files.
 
 ## Environments
 We have packaged all the dependencies into Connect.tar.gz, which can be directly downloaded for easy access [here](https://huggingface.co/yanchaoz/SegNeuron).
