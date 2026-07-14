@@ -7,6 +7,7 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
 ![GitHub forks](https://img.shields.io/github/forks/yanchaoz/SegNeuron?style=social)
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=yanchaoz.SegNeuron)
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-EMNeuron-yellow)](https://huggingface.co/datasets/yanchaoz/EMNeuron)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yanchaoz/SegNeuron/blob/main/SegNeuron_Colab_Inference.ipynb)
 
  
 
@@ -16,7 +17,7 @@ The general-purpose model achieves outstanding reconstruction performance on ent
   <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
 </p>
 
-A self-contained [Notebook](SegNeuron_Colab_Inference.ipynb) is provided for easily running SegNeuron inference and postprocessing on custom 3D EM volumes without cloning the repository or importing external Python files.
+ 
 
 ## Environments
 We have packaged all the dependencies into Connect.tar.gz, which can be directly downloaded for easy access [here](https://huggingface.co/yanchaoz/SegNeuron).
