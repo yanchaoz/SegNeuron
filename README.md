@@ -9,14 +9,6 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
 [![HuggingFace](https://img.shields.io/badge/🤗%20Dataset-EMNeuron-yellow)](https://huggingface.co/datasets/yanchaoz/EMNeuron)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/yanchaoz/SegNeuron/blob/main/SegNeuron_Colab_Inference.ipynb)
 
- 
-
-## How does SegNeuron speed up neuron segmentation in EM volumes?
-The general-purpose model achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: **5–10** nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models. 
-<p align="center">
-  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
-</p>
-
 
 > [!TIP]
 > **SegNeuron is now available as an Agent Skill in [EM-Skills](https://github.com/yanchaoz/EM-Skills).**
@@ -29,6 +21,15 @@ The general-purpose model achieves outstanding reconstruction performance on ent
 > - 🎥 **CloudVolume-based visualization and video generation**
 >
 > 👉 See **[EM-Skills](https://github.com/yanchaoz/EM-Skills)** for installation and usage.
+
+
+## How does SegNeuron speed up neuron segmentation in EM volumes?
+The general-purpose model achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: **5–10** nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models. 
+<p align="center">
+  <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
+</p>
+
+
 
  
 
