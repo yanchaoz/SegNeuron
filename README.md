@@ -20,7 +20,7 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
 > - 🎯 **Informative annotation-region selection**
 > - 🎥 **CloudVolume-based visualization and video generation**
 >
-> 👉 See **[EM-Skills](https://github.com/yanchaoz/EM-Skills)** for installation and usage.
+> 👉 See **[EM-Skills](https://github.com/yanchaoz/EM-Skills)** for installation and usage. Feel free to submit issues, propose new EM Skills, improve existing workflows.
 
 
 ## How does SegNeuron speed up neuron segmentation in EM volumes?
