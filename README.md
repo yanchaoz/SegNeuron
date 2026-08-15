@@ -1,7 +1,7 @@
 
 # SegNeuron  <img src="/Figures/logo.png" alt="logo" width="50" style="vertical-align: middle;"/> 
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
- Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf))
+ Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf)) 
 
 ![GitHub stars](https://img.shields.io/github/stars/yanchaoz/SegNeuron?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/yanchaoz/SegNeuron?style=social)
@@ -12,7 +12,7 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
  
 
 ## How does SegNeuron speed up neuron segmentation in EM volumes?
-The general-purpose model achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: **5–10** nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models. We are currently working on developing a user-friendly tool based on Napari.
+The general-purpose model achieves outstanding reconstruction performance on entirely unseen 3D EM datasets (x/y resolution: **5–10** nm). Human experts only need to perform connectivity corrections on the coarse segmentation results, which can then be directly used to fine-tune SegNeuron or to train new lightweight models. To make this workflow easier to use with AI coding agents, **SegNeuron has now been packaged as a reusable Agent Skill** in [EM-Skills](https://github.com/yanchaoz/EM-Skills). The repository is being expanded into a collection of reusable skills for EM analysis, including **SegNeuron-based neuron segmentation, Mitonet-based mitochondria segmentation, informative annotation-region selection, and CloudVolume-based visualization/video generation**.
 <p align="center">
   <img src="/Figures/pipeline.png"  alt="SegNeuron-based Pipeline" width="900"/>
 </p>
