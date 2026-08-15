@@ -18,7 +18,17 @@ The general-purpose model achieves outstanding reconstruction performance on ent
 </p>
 
 
-To make this workflow easier to use with AI coding agents, **SegNeuron has now been packaged as a reusable Agent Skill** in [EM-Skills](https://github.com/yanchaoz/EM-Skills). The repository is being expanded into a collection of reusable skills for EM analysis, including **SegNeuron-based neuron segmentation, Mitonet-based mitochondria segmentation, informative annotation-region selection, and CloudVolume-based visualization/video generation**.
+> [!TIP]
+> **SegNeuron is now available as an Agent Skill in [EM-Skills](https://github.com/yanchaoz/EM-Skills).**
+>
+> To make EM analysis easier to use with AI coding agents, we have packaged SegNeuron into a reusable Agent Skill.  
+> **EM-Skills** currently provides reusable workflows for:
+> - 🧠 **SegNeuron-based neuron segmentation**
+> - 🧬 **MitoNet-based mitochondria segmentation**
+> - 🎯 **Informative annotation-region selection**
+> - 🎥 **CloudVolume-based visualization and video generation**
+>
+> 👉 See **[EM-Skills](https://github.com/yanchaoz/EM-Skills)** for installation and usage.
 
  
 
