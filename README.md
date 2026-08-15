@@ -13,14 +13,13 @@ Official implementation, datasets and trained models of "SegNeuron: 3D Neuron In
 > [!TIP]
 > **SegNeuron is now available as an Agent Skill in [EM-Skills](https://github.com/yanchaoz/EM-Skills).**
 >
-> To make EM analysis easier to use with AI coding agents, we have packaged SegNeuron into a reusable Agent Skill.  
-> **EM-Skills** currently provides reusable workflows for:
-> - 🧠 **SegNeuron-based neuron segmentation**
-> - 🧬 **MitoNet-based mitochondria segmentation**
-> - 🎯 **Informative annotation-region selection**
-> - 🎥 **CloudVolume-based visualization and video generation**
+> **EM-Skills** is a growing collection of reusable Agent Skills for EM analysis, currently including:
+> - 🧠 **Neuron Segmentation Skill** — SegNeuron-based neuron reconstruction
+> - 🧬 **Mitochondria Segmentation Skill** — MitoNet-based mitochondria segmentation
+> - 🎯 **Annotation Selection Skill** — informative region selection for efficient annotation
+> - 🎥 **EM Visualization Skill** — CloudVolume-based visualization and video generation
 >
-> 👉 See **[EM-Skills](https://github.com/yanchaoz/EM-Skills)** for installation and usage. Feel free to submit issues, propose new EM Skills, improve existing workflows.
+> 👉 See **[EM-Skills](https://github.com/yanchaoz/EM-Skills)** for installation and usage. Contributions are welcome—feel free to submit issues, propose new EM Skills, or improve existing ones.
 
 
 ## How does SegNeuron speed up neuron segmentation in EM volumes?
