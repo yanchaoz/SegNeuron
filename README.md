@@ -1,46 +1,6 @@
 
 # SegNeuron  <img src="/Figures/logo.png" alt="logo" width="50" style="vertical-align: middle;"/> 
 
-> [!IMPORTANT]
-> This is a legacy-stabilized copy of upstream commit `659ce323`. The original
-> commit is pinned by the `legacy/upstream-659ce323` branch and documented in
-> [`legacy/`](legacy/README.md). Stabilization
-> fixes startup crashes and configuration errors while intentionally preserving
-> the model, checkpoint, inference, loss, normalization, postprocessing, and
-> input/output contracts. Use `environment.yml` for the reproducible legacy
-> environment; the original full environment export remains in
-> `requirements.txt` for provenance.
-
-The unmodified upstream commit is retained as the legacy baseline at
-[`legacy/upstream-659ce323`](https://github.com/yanchaoz/SegNeuron/tree/legacy/upstream-659ce323).
-The exact commit and reference-model hashes are recorded in
-[`legacy/manifest.json`](legacy/manifest.json) and enforced by the contract
-tests. Do not rewrite the legacy branch when updating maintained code; add a
-reviewed migration and golden evidence instead.
-
-> [!NOTE]
-> This code-polished edition also applies behavior-preserving formatting, import
-> cleanup, safer function defaults, narrower exception handling, and fixes for
-> deterministic Python errors across the repository. See
-> [`CODE_QUALITY_REPORT.md`](CODE_QUALITY_REPORT.md) for scope, remaining risks,
-> and verification evidence. Run `python -m ruff check .` and
-> `python -B -m unittest discover -s tests -v` before making further changes.
-
-### Verified compatibility
-
-The maintained code was smoke-tested on the following legacy GPU environment:
-
-| Component | Verified value |
-| --- | --- |
-| Python | 3.8.10 |
-| PyTorch | 1.9.0+cu102 |
-| CUDA | available; CUDA forward pass verified |
-| Contract/model-equivalence tests | 8/8 passed |
-
-Both supervised and pretraining `MNet` variants completed a CUDA forward pass
-with input shape `(1, 1, 8, 32, 32)`. This is a compatibility smoke test, not a
-substitute for end-to-end validation with the published datasets and weights.
-
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf)) 
 
@@ -110,20 +70,44 @@ The datasets required for model development and validation are available [here](
 
 
 ## Training
+
+SegNeuron uses the original two-stage training workflow: self-supervised
+pretraining followed by supervised training. This maintenance update does not
+change the objectives, dataset sampling, checkpoint format, or model outputs.
+
+Before running either stage, edit its `config/SegNeuron.yaml` and replace the
+placeholder paths. The current providers require CUDA and preserve the original
+dataset layout: pretraining reads numbered `*.tif` volumes from its predefined
+dataset folders, while supervised training reads paired `<index>.tif` and
+`<index>_MaskIns.tif` volumes. Dataset names and sampling ranges are currently
+fixed in the providers; changing their order or volume counts requires a
+separate, compatibility-tested sampler update.
+
 ### 1. Pretraining
+
+Set `DATA.data_folder` in [`Pretrain/config/SegNeuron.yaml`](Pretrain/config/SegNeuron.yaml).
+For training from scratch, set `MODEL.pre_train: False` and
+`MODEL.continue_train: False`. To initialize or resume from a checkpoint, enable
+the intended option and provide its corresponding path.
+
 ```
 cd Pretrain
-```
-```
 python pretrain.py
 ```
+
 ### 2. Supervised Training
+
+Set `DATA.data_folder` in
+[`Train_and_Inference/config/SegNeuron.yaml`](Train_and_Inference/config/SegNeuron.yaml).
+For the intended fine-tuning workflow, set `MODEL.pre_train: True` and provide
+`MODEL.pretrain_path`; set it to `False` only when deliberately training from
+scratch.
+
 ```
 cd Train_and_Inference
-```
-```
 python supervised_train.py
 ```
+
 ## Inference
 ### 1. Affinity Inference
 ```
