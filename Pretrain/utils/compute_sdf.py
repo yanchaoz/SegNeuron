@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.ndimage import distance_transform_edt as distance
-from skimage import segmentation as skimage_seg
+
 
 def compute_sdf(img_gt):
     """
@@ -20,7 +20,7 @@ def compute_sdf(img_gt):
     # if ids is None
     if len(ids) == 0:
         return normalized_sdf
-    
+
     for id in ids:
         posmask = np.zeros_like(img_gt)
         posmask[img_gt == id] = 1

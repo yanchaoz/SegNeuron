@@ -1,5 +1,46 @@
 
 # SegNeuron  <img src="/Figures/logo.png" alt="logo" width="50" style="vertical-align: middle;"/> 
+
+> [!IMPORTANT]
+> This is a legacy-stabilized copy of upstream commit `659ce323`. The original
+> commit is pinned by the `legacy/upstream-659ce323` branch and documented in
+> [`legacy/`](legacy/README.md). Stabilization
+> fixes startup crashes and configuration errors while intentionally preserving
+> the model, checkpoint, inference, loss, normalization, postprocessing, and
+> input/output contracts. Use `environment.yml` for the reproducible legacy
+> environment; the original full environment export remains in
+> `requirements.txt` for provenance.
+
+The unmodified upstream commit is retained as the legacy baseline at
+[`legacy/upstream-659ce323`](https://github.com/yanchaoz/SegNeuron/tree/legacy/upstream-659ce323).
+The exact commit and reference-model hashes are recorded in
+[`legacy/manifest.json`](legacy/manifest.json) and enforced by the contract
+tests. Do not rewrite the legacy branch when updating maintained code; add a
+reviewed migration and golden evidence instead.
+
+> [!NOTE]
+> This code-polished edition also applies behavior-preserving formatting, import
+> cleanup, safer function defaults, narrower exception handling, and fixes for
+> deterministic Python errors across the repository. See
+> [`CODE_QUALITY_REPORT.md`](CODE_QUALITY_REPORT.md) for scope, remaining risks,
+> and verification evidence. Run `python -m ruff check .` and
+> `python -B -m unittest discover -s tests -v` before making further changes.
+
+### Verified compatibility
+
+The maintained code was smoke-tested on the following legacy GPU environment:
+
+| Component | Verified value |
+| --- | --- |
+| Python | 3.8.10 |
+| PyTorch | 1.9.0+cu102 |
+| CUDA | available; CUDA forward pass verified |
+| Contract/model-equivalence tests | 8/8 passed |
+
+Both supervised and pretraining `MNet` variants completed a CUDA forward pass
+with input shape `(1, 1, 8, 32, 32)`. This is a compatibility smoke test, not a
+substitute for end-to-end validation with the published datasets and weights.
+
 Official implementation, datasets and trained models of "SegNeuron: 3D Neuron Instance Segmentation in
  Any EM Volume with a Generalist Model" （[MICCAI 2024](https://papers.miccai.org/miccai-2024/paper/0518_paper.pdf)) 
 

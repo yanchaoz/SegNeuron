@@ -1,14 +1,18 @@
 NAME: 'SegNeuron'
 
 MODEL:
+  # MNet uses the full-resolution ("superhuman") crop convention.
+  model_type: 'superhuman'
   pre_train: True
   pretrain_path: '/***/***'
   continue_train: False
   continue_path: '/***/***'
 
 TRAIN:
+  # The public snapshot has no validation provider; keep this disabled until
+  # an explicit validation pipeline is configured.
+  if_valid: False
   resume: False
-  if_valid: True
   cache_path: './caches/'
   save_path: './models/'
   pad: 0

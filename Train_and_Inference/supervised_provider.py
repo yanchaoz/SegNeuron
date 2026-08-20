@@ -1,28 +1,21 @@
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import division
-
-
 import os
-import sys
 import random
-import numpy as np
-from torch.utils.data import Dataset
-from torch.utils.data import DataLoader
-from utils.augmentation import SimpleAugment as Filp
-from utils.consistency_aug_perturbations import Intensity
-from utils.consistency_aug_perturbations import GaussBlur
-from utils.consistency_aug_perturbations import GaussNoise
-from utils.consistency_aug_perturbations_sup import Cutout
-from utils.augmentation import ElasticAugment as Elastic
+import sys
+
 import imageio
-from utils.seg_util import mknhood3d
+import numpy as np
+from torch.utils.data import DataLoader, Dataset
 from utils.aff_util import seg_to_affgraph
+from utils.augmentation import ElasticAugment as Elastic
+from utils.augmentation import SimpleAugment as Filp
+from utils.consistency_aug_perturbations import GaussBlur, GaussNoise, Intensity
+from utils.consistency_aug_perturbations_sup import Cutout
+from utils.seg_util import mknhood3d
 
 
 class Train(Dataset):
     def __init__(self, cfg):
-        super(Train, self).__init__()
+        super().__init__()
         self.cfg = cfg
         self.model_type = cfg.MODEL.model_type
 
@@ -42,17 +35,27 @@ class Train(Dataset):
 
         self.dataset = []
         self.labels = []
-        dataset_list = ['J0126-sbem', 'Kasthuri-atum', 'Hemi-brain-fib', 'CREMI-sstem', 'AxonEM[M]-sstem',
-                        'AxonEM[H]-atum', 'Mira-adwt', 'Fib-25-fib', 'Mira-scn', 'Mira-fish']
+        dataset_list = [
+            "J0126-sbem",
+            "Kasthuri-atum",
+            "Hemi-brain-fib",
+            "CREMI-sstem",
+            "AxonEM[M]-sstem",
+            "AxonEM[H]-atum",
+            "Mira-adwt",
+            "Fib-25-fib",
+            "Mira-scn",
+            "Mira-fish",
+        ]
 
         for sub_path in dataset_list:
             self.folder_name = os.path.join(cfg.DATA.data_folder, sub_path)
             file_num = len(os.listdir(self.folder_name)) // 2
-            train_datasets = ['%d.tif' % i for i in range(file_num)]
-            train_labels = ['%d_MaskIns.tif' % i for i in range(file_num)]
+            train_datasets = ["%d.tif" % i for i in range(file_num)]
+            train_labels = ["%d_MaskIns.tif" % i for i in range(file_num)]
 
             for k in range(len(train_datasets)):
-                print('load ' + self.folder_name + train_datasets[k] + ' ...')
+                print("load " + self.folder_name + train_datasets[k] + " ...")
                 data = imageio.volread(os.path.join(self.folder_name, train_datasets[k]))
                 self.dataset.append(data[:])
                 label = imageio.volread(os.path.join(self.folder_name, train_labels[k]))
@@ -104,18 +107,24 @@ class Train(Dataset):
         random_y = random.randint(0, raw_data_shape[1] - self.crop_from_origin[1])
         random_x = random.randint(0, raw_data_shape[2] - self.crop_from_origin[2])
 
-        imgs1 = used_data[random_z:random_z + self.crop_from_origin[0], \
-                random_y:random_y + self.crop_from_origin[1], \
-                random_x:random_x + self.crop_from_origin[2]].copy()
-        lb1 = used_label[random_z:random_z + self.crop_from_origin[0], \
-              random_y:random_y + self.crop_from_origin[1], \
-              random_x:random_x + self.crop_from_origin[2]].copy()
+        imgs1 = used_data[
+            random_z : random_z + self.crop_from_origin[0],
+            random_y : random_y + self.crop_from_origin[1],
+            random_x : random_x + self.crop_from_origin[2],
+        ].copy()
+        lb1 = used_label[
+            random_z : random_z + self.crop_from_origin[0],
+            random_y : random_y + self.crop_from_origin[1],
+            random_x : random_x + self.crop_from_origin[2],
+        ].copy()
 
         imgs1 = imgs1.astype(np.float32) / 255.0
 
         # style-mixing
         if random.random() < self.cfg.TRAIN.freq_mix_prob:
-            type_dataset_r = random.choice(list(range(0, type_dataset)) + list(range(type_dataset + 1, 9)))
+            type_dataset_r = random.choice(
+                list(range(type_dataset)) + list(range(type_dataset + 1, 9))
+            )
             if type_dataset_r == 0:
                 r = random.randint(0, 32)  # j0126
             elif type_dataset_r == 1:
@@ -143,9 +152,11 @@ class Train(Dataset):
             random_y = random.randint(0, raw_data_shape_r[1] - self.crop_from_origin[1])
             random_x = random.randint(0, raw_data_shape_r[2] - self.crop_from_origin[2])
 
-            imgs2 = used_data_r[random_z:random_z + self.crop_from_origin[0], \
-                    random_y:random_y + self.crop_from_origin[1], \
-                    random_x:random_x + self.crop_from_origin[2]].copy()
+            imgs2 = used_data_r[
+                random_z : random_z + self.crop_from_origin[0],
+                random_y : random_y + self.crop_from_origin[1],
+                random_x : random_x + self.crop_from_origin[2],
+            ].copy()
             imgs2 = imgs2.astype(np.float32) / 255.0
             imgs1 = FDA_source_to_target_np_3D(imgs1, imgs2, 0.001)
 
@@ -156,13 +167,15 @@ class Train(Dataset):
         [imgs1, lb1] = self.simple_aug([imgs1, lb1])
         imgs1, lb1 = self.apply_perturbations(imgs1, lb1)
 
-        lb_affs1 = seg_to_affgraph(lb1, mknhood3d(1), pad='replicate').astype(np.float32)
+        lb_affs1 = seg_to_affgraph(lb1, mknhood3d(1), pad="replicate").astype(np.float32)
         bounds1 = np.float32(lb1 != 0)
 
         type_dataset_r2, r2 = -1, -1
         if random.random() < self.cfg.TRAIN.spa_mix_prob:
             if random.random() < 0.5:
-                type_dataset_r2 = random.choice((list(range(0, type_dataset)) + list(range(type_dataset + 1, 9))))
+                type_dataset_r2 = random.choice(
+                    list(range(type_dataset)) + list(range(type_dataset + 1, 9))
+                )
                 if type_dataset_r2 == 0:
                     r2 = random.randint(0, 32)  # j0126
                 elif type_dataset_r2 == 1:
@@ -191,26 +204,33 @@ class Train(Dataset):
             random_z = random.randint(0, raw_data_shape[0] - self.crop_from_origin[0])
             random_y = random.randint(0, raw_data_shape[1] - self.crop_from_origin[1])
             random_x = random.randint(0, raw_data_shape[2] - self.crop_from_origin[2])
-            imgs2 = used_data[random_z:random_z + self.crop_from_origin[0], \
-                    random_y:random_y + self.crop_from_origin[1], \
-                    random_x:random_x + self.crop_from_origin[2]].copy()
-            lb2 = used_label[random_z:random_z + self.crop_from_origin[0], \
-                  random_y:random_y + self.crop_from_origin[1], \
-                  random_x:random_x + self.crop_from_origin[2]].copy()
+            imgs2 = used_data[
+                random_z : random_z + self.crop_from_origin[0],
+                random_y : random_y + self.crop_from_origin[1],
+                random_x : random_x + self.crop_from_origin[2],
+            ].copy()
+            lb2 = used_label[
+                random_z : random_z + self.crop_from_origin[0],
+                random_y : random_y + self.crop_from_origin[1],
+                random_x : random_x + self.crop_from_origin[2],
+            ].copy()
             imgs2 = imgs2.astype(np.float32) / 255.0
             [imgs2, lb2] = self.simple_aug([imgs2, lb2])
             imgs2, lb2 = self.apply_perturbations(imgs2, lb2)
 
-            lb_affs2 = seg_to_affgraph(lb2, mknhood3d(1), pad='replicate').astype(np.float32)
+            lb_affs2 = seg_to_affgraph(lb2, mknhood3d(1), pad="replicate").astype(np.float32)
             bounds2 = np.float32(lb2 != 0)
 
             random_y_mask = random.randint(0, 58)
             random_x_mask = random.randint(0, 58)
             mask = np.ones(self.crop_from_origin)
-            mask[:, random_y_mask:random_y_mask + 70, random_x_mask:random_x_mask + 70] = 0
+            mask[:, random_y_mask : random_y_mask + 70, random_x_mask : random_x_mask + 70] = 0
 
             imgs = mask * imgs1 + (1 - mask) * imgs2
-            lb_affs = np.array([mask, mask, mask]) * lb_affs1 + (1 - np.array([mask, mask, mask])) * lb_affs2
+            lb_affs = (
+                np.array([mask, mask, mask]) * lb_affs1
+                + (1 - np.array([mask, mask, mask])) * lb_affs2
+            )
             lb = mask * lb1 + (1 - mask) * lb2
             bounds = mask * bounds1 + (1 - mask) * bounds2
 
@@ -222,7 +242,13 @@ class Train(Dataset):
 
         # area mask
         if True:
-            if type_dataset == 10 or type_dataset == 0 or type_dataset == 8 or type_dataset_r2 == 0 or type_dataset_r2 == 8:
+            if (
+                type_dataset == 10
+                or type_dataset == 0
+                or type_dataset == 8
+                or type_dataset_r2 == 0
+                or type_dataset_r2 == 8
+            ):
                 bmask = 1 - np.uint(lb == 10000)
             elif (type_dataset == 1 and k == 33) or (type_dataset_r2 == 1 and r2 == 33):
                 bmask = 1 - (np.uint(lb == 121) + np.uint(lb == 122))
@@ -247,13 +273,27 @@ class Train(Dataset):
 
     def perturbations_init(self):
         self.per_intensity = Intensity()
-        self.per_gaussnoise = GaussNoise(min_std=self.min_noise_std, max_std=self.max_noise_std, norm_mode='trunc')
-        self.per_gaussblur = GaussBlur(min_kernel=self.min_kernel_size, max_kernel=self.max_kernel_size,
-                                       min_sigma=self.min_sigma, max_sigma=self.max_sigma)
+        self.per_gaussnoise = GaussNoise(
+            min_std=self.min_noise_std, max_std=self.max_noise_std, norm_mode="trunc"
+        )
+        self.per_gaussblur = GaussBlur(
+            min_kernel=self.min_kernel_size,
+            max_kernel=self.max_kernel_size,
+            min_sigma=self.min_sigma,
+            max_sigma=self.max_sigma,
+        )
         self.per_cutout = Cutout(model_type=self.model_type)
-        self.per_misalign = Elastic(control_point_spacing=[4, 40, 40], jitter_sigma=[0, 0, 0], prob_slip=0.2,
-                                    prob_shift=0.2, max_misalign=17, padding=20)
-        self.per_elastic = Elastic(control_point_spacing=[4, 40, 40], jitter_sigma=[0, 2, 2], padding=20)
+        self.per_misalign = Elastic(
+            control_point_spacing=[4, 40, 40],
+            jitter_sigma=[0, 0, 0],
+            prob_slip=0.2,
+            prob_shift=0.2,
+            max_misalign=17,
+            padding=20,
+        )
+        self.per_elastic = Elastic(
+            control_point_spacing=[4, 40, 40], jitter_sigma=[0, 2, 2], padding=20
+        )
 
     def apply_perturbations(self, data, mask):
         if random.random() < 0.25:
@@ -273,33 +313,48 @@ class Train(Dataset):
         return int(sys.maxsize)
 
 
-class Provider(object):
+class Provider:
     def __init__(self, stage, cfg):
         self.stage = stage
-        if self.stage == 'train':
+        if self.stage == "train":
             self.data = Train(cfg)
             self.batch_size = cfg.TRAIN.batch_size
             self.num_workers = cfg.TRAIN.num_workers
-        elif self.stage == 'valid':
+        elif self.stage == "valid":
             pass
         else:
-            raise AttributeError('Stage must be train/valid')
+            raise AttributeError("Stage must be train/valid")
         self.is_cuda = cfg.TRAIN.if_cuda
         self.data_iter = None
         self.iteration = 0
         self.epoch = 1
 
     def __len__(self):
-        return self.data.num_per_epoch
+        return len(self.data)
 
     def build(self):
-        if self.stage == 'train':
+        if self.stage == "train":
             self.data_iter = iter(
-                DataLoader(dataset=self.data, batch_size=self.batch_size, num_workers=self.num_workers,
-                           shuffle=False, drop_last=False, pin_memory=True))
+                DataLoader(
+                    dataset=self.data,
+                    batch_size=self.batch_size,
+                    num_workers=self.num_workers,
+                    shuffle=False,
+                    drop_last=False,
+                    pin_memory=True,
+                )
+            )
         else:
-            self.data_iter = iter(DataLoader(dataset=self.data, batch_size=1, num_workers=0,
-                                             shuffle=False, drop_last=False, pin_memory=True))
+            self.data_iter = iter(
+                DataLoader(
+                    dataset=self.data,
+                    batch_size=1,
+                    num_workers=0,
+                    shuffle=False,
+                    drop_last=False,
+                    pin_memory=True,
+                )
+            )
 
     def next(self):
         if self.data_iter is None:
@@ -339,7 +394,7 @@ def FDA_source_to_target_np(src_img, trg_img, L=0.1):
 
     # extract amplitude and phase of both ffts
     amp_src, pha_src = np.abs(fft_src_np), np.angle(fft_src_np)
-    amp_trg, pha_trg = np.abs(fft_trg_np), np.angle(fft_trg_np)
+    amp_trg = np.abs(fft_trg_np)
 
     # mutate the amplitude part of source with target
     amp_src_ = low_freq_mutate_np(amp_src, amp_trg, L=L)

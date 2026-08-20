@@ -1,7 +1,9 @@
-import torch
 import random
-import numpy as np
 import subprocess
+
+import numpy as np
+import torch
+
 
 def setup_seed(seed):
     torch.manual_seed(seed)
@@ -11,6 +13,7 @@ def setup_seed(seed):
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
 
+
 def execute(cmd):
     popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
     for stdout_line in iter(popen.stdout.readline, ""):
@@ -19,6 +22,7 @@ def execute(cmd):
     return_code = popen.wait()
     if return_code:
         raise subprocess.CalledProcessError(return_code, cmd)
+
 
 def compute_num_single(size, stride):
     # 计算大概需要滑窗的个数
@@ -40,6 +44,7 @@ def compute_num_single(size, stride):
     num_window += 1
     return num_window, padding
 
+
 def compute_num(raw_shape, stride):
     size_z = raw_shape[0]
     size_xy = raw_shape[1]
@@ -48,6 +53,7 @@ def compute_num(raw_shape, stride):
     num_z, padding_z = compute_num_single(size_z, stride_z)
     num_xy, padding_xy = compute_num_single(size_xy, stride_xy)
     return [num_z, num_xy, num_xy], [padding_z, padding_xy, padding_xy]
+
 
 if __name__ == "__main__":
     raw = [500, 4096, 4096]

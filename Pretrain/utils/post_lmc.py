@@ -1,32 +1,19 @@
-import numpy as np
-from skimage.metrics import adapted_rand_error as adapted_rand_ref
-from skimage.metrics import variation_of_information as voi_ref
-import elf.segmentation.watershed as ws
-import elf.segmentation.multicut as mc
 import elf.segmentation.features as feats
+import elf.segmentation.multicut as mc
 import elf.segmentation.watershed as ws
-from elf.segmentation.features import *
-from elf.segmentation.learning import *
-from elf.segmentation.mutex_watershed import mutex_watershed
-from elf.parallel.relabel import relabel_consecutive
-from nifty import tools as ntools
-import nifty.graph.rag as nrag
-import os
-import time
-from tqdm import tqdm
 import numpy as np
-import joblib
-import imageio
-from skimage.metrics import variation_of_information, adapted_rand_error
-from multiprocessing import Pool, Lock
+from elf.segmentation.learning import compute_boundary_features
+
 
 def post_lmc(affs):
     affs = 1 - affs
     boundary_input = np.maximum(affs[1], affs[2])
-    watershed = np.zeros_like(boundary_input, dtype='uint64')
+    watershed = np.zeros_like(boundary_input, dtype="uint64")
     offset = 0
     for z in range(watershed.shape[0]):
-        wsz, max_id = ws.distance_transform_watershed(boundary_input[z], threshold=.25, sigma_seeds=2.)
+        wsz, max_id = ws.distance_transform_watershed(
+            boundary_input[z], threshold=0.25, sigma_seeds=2.0
+        )
         wsz += offset
         offset += max_id
         watershed[z] = wsz
@@ -39,13 +26,16 @@ def post_lmc(affs):
     segmentation = feats.project_node_labels_to_pixels(rag, node_labels)
     return segmentation
 
+
 def post_lmc_lh(affs, beta):
     affs = 1 - affs
     boundary_input = np.maximum(affs[1], affs[2])
-    watershed = np.zeros_like(boundary_input, dtype='uint64')
+    watershed = np.zeros_like(boundary_input, dtype="uint64")
     offset = 0
     for z in range(watershed.shape[0]):
-        wsz, max_id = ws.distance_transform_watershed(boundary_input[z], threshold=.25, sigma_seeds=2.)
+        wsz, max_id = ws.distance_transform_watershed(
+            boundary_input[z], threshold=0.25, sigma_seeds=2.0
+        )
         wsz += offset
         offset += max_id
         watershed[z] = wsz
@@ -58,12 +48,15 @@ def post_lmc_lh(affs, beta):
     segmentation = feats.project_node_labels_to_pixels(rag, node_labels)
     return segmentation
 
+
 def post_mc_b(boundary_input, beta=0.25):
-    boundary_input = 1 - boundary_input 
-    watershed = np.zeros_like(boundary_input, dtype='uint64')
+    boundary_input = 1 - boundary_input
+    watershed = np.zeros_like(boundary_input, dtype="uint64")
     offset = 0
     for z in range(watershed.shape[0]):
-        wsz, max_id = ws.distance_transform_watershed(boundary_input[z], threshold=0.25, sigma_seeds=2.0)
+        wsz, max_id = ws.distance_transform_watershed(
+            boundary_input[z], threshold=0.25, sigma_seeds=2.0
+        )
         wsz += offset
         offset += max_id
         watershed[z] = wsz

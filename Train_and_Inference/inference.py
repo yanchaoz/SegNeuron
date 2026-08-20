@@ -1,51 +1,53 @@
-import os
-import yaml
 import argparse
+import os
+import warnings
+from collections import OrderedDict
+
 import imageio
 import numpy as np
-from attrdict import AttrDict
-from collections import OrderedDict
-from tqdm import tqdm
-import warnings
 import torch
-import torch.nn as nn
+import yaml
+from attrdict import AttrDict
 from inference_provider import Provider_valid
 from model.Mnet import MNet
+from torch import nn
+from tqdm import tqdm
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--cfg', type=str, default='SegNeuron', help='path to config file')
+    parser.add_argument("-c", "--cfg", type=str, default="SegNeuron", help="path to config file")
     args = parser.parse_args()
-    cfg_file = args.cfg + '.yaml'
-    print('cfg_file: ' + cfg_file)
-    with open('./config/' + cfg_file, 'r') as f:
+    cfg_file = args.cfg + ".yaml"
+    print("cfg_file: " + cfg_file)
+    with open("./config/" + cfg_file) as f:
         cfg = AttrDict(yaml.safe_load(f))
 
-    pth = '/***/***.pth'
+    pth = "/***/***.pth"
 
-    model = MNet(1, kn=(32, 64, 96, 128, 256), FMU='sub').cuda()
+    model = MNet(1, kn=(32, 64, 96, 128, 256), FMU="sub").cuda()
     checkpoint = torch.load(pth)
     new_state_dict = OrderedDict()
-    state_dict = checkpoint['model_weights']
+    state_dict = checkpoint["model_weights"]
     for k, v in state_dict.items():
-        name = k.replace('module.', '') if 'module' in k else k
+        name = k.replace("module.", "") if "module" in k else k
         new_state_dict[name] = v
-    print('load mnet!')
+    print("load mnet!")
     model.load_state_dict(new_state_dict)
     model = model.cuda()
 
     model.eval()
-    valid_provider = Provider_valid(cfg, valid_data='***')
+    valid_provider = Provider_valid(cfg, valid_data="***")
     criterion = nn.BCELoss()
-    dataloader = torch.utils.data.DataLoader(valid_provider, batch_size=1, num_workers=0,
-                                             shuffle=False, drop_last=False, pin_memory=True)
+    dataloader = torch.utils.data.DataLoader(
+        valid_provider, batch_size=1, num_workers=0, shuffle=False, drop_last=False, pin_memory=True
+    )
 
     pbar = tqdm(total=len(valid_provider))
     losses_valid = []
-    for k, batch in enumerate(dataloader, 0):
+    for batch in dataloader:
         inputs, target, _ = batch
         inputs = inputs.cuda()
         target = target.cuda()
@@ -63,5 +65,5 @@ if __name__ == "__main__":
     gt_seg = valid_provider.get_gt_lb()
     valid_provider.reset_output()
 
-    np.save('/***/***', out_affs)
-    imageio.volwrite('/***/***.tif', out_bounds.squeeze())
+    np.save("/***/***", out_affs)
+    imageio.volwrite("/***/***.tif", out_bounds.squeeze())

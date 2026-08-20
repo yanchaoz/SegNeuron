@@ -1,0 +1,2 @@
+# Frozen reference sources must remain byte-identical to the legacy commit.
+legacy/reference/** -whitespace

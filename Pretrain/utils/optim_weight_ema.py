@@ -1,7 +1,7 @@
 import torch
 
 
-class EMAWeightOptimizer (object):
+class EMAWeightOptimizer:
     def __init__(self, target_net, source_net, ema_alpha):
         self.target_net = target_net
         self.source_net = source_net
@@ -15,8 +15,9 @@ class EMAWeightOptimizer (object):
         target_keys = set(target_net.state_dict().keys())
         source_keys = set(source_net.state_dict().keys())
         if target_keys != source_keys:
-            raise ValueError('Source and target networks do not have the same state dict keys; do they have different architectures?')
-
+            raise ValueError(
+                "Source and target networks do not have the same state dict keys; do they have different architectures?"
+            )
 
     def step(self):
         one_minus_alpha = 1.0 - self.ema_alpha

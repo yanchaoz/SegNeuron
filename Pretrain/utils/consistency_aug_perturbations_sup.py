@@ -1,16 +1,19 @@
-import cv2
-import torch
 import random
-import numpy as np
-import torch.nn.functional as F
-from skimage import filters
-from scipy.ndimage.filters import gaussian_filter
 
-from utils.augmentation import create_identity_transformation
-from utils.augmentation import create_elastic_transformation
-from utils.augmentation import apply_transformation
-from utils.augmentation import misalign
-from utils.flow_synthesis import gen_line, gen_flow
+import cv2
+import numpy as np
+import torch
+import torch.nn.functional as F
+from scipy.ndimage.filters import gaussian_filter
+from skimage import filters
+
+from utils.augmentation import (
+    apply_transformation,
+    create_elastic_transformation,
+    create_identity_transformation,
+    misalign,
+)
+from utils.flow_synthesis import gen_flow, gen_line
 from utils.image_warp import image_warp
 
 
@@ -77,50 +80,57 @@ def order_aug(imgs, num_patch=4):
     patch_size = imgs.shape[-1] // num_patch
     new_imgs = np.zeros_like(imgs, dtype=np.float32)
     # ran_order = np.random.shuffle(np.arange(num_patch**2))
-    ran_order = np.random.permutation(num_patch ** 2)
-    for k in range(num_patch ** 2):
+    ran_order = np.random.permutation(num_patch**2)
+    for k in range(num_patch**2):
         xid_new = k // num_patch
         yid_new = k % num_patch
         order_id = ran_order[k]
         xid_old = order_id // num_patch
         yid_old = order_id % num_patch
-        new_imgs[:, xid_new * patch_size:(xid_new + 1) * patch_size, yid_new * patch_size:(yid_new + 1) * patch_size] = \
-            imgs[:, xid_old * patch_size:(xid_old + 1) * patch_size, yid_old * patch_size:(yid_old + 1) * patch_size]
+        new_imgs[
+            :,
+            xid_new * patch_size : (xid_new + 1) * patch_size,
+            yid_new * patch_size : (yid_new + 1) * patch_size,
+        ] = imgs[
+            :,
+            xid_old * patch_size : (xid_old + 1) * patch_size,
+            yid_old * patch_size : (yid_old + 1) * patch_size,
+        ]
     return new_imgs
 
 
-def gen_mask(imgs, net_crop_size=[0, 0, 0], mask_counts=80, mask_size_z=8, mask_size_xy=15):
+def gen_mask(imgs, net_crop_size=(0, 0, 0), mask_counts=80, mask_size_z=8, mask_size_xy=15):
     crop_size = list(imgs.shape)
     mask = np.ones_like(imgs, dtype=np.float32)
-    for k in range(mask_counts):
+    for _ in range(mask_counts):
         mz = random.randint(net_crop_size[0], crop_size[0] - mask_size_z - net_crop_size[0])
         my = random.randint(net_crop_size[1], crop_size[1] - mask_size_xy - net_crop_size[1])
         mx = random.randint(net_crop_size[2], crop_size[2] - mask_size_xy - net_crop_size[2])
-        mask[mz:mz + mask_size_z, my:my + mask_size_xy, mx:mx + mask_size_xy] = 0
+        mask[mz : mz + mask_size_z, my : my + mask_size_xy, mx : mx + mask_size_xy] = 0
     return mask
 
 
-def resize_3d(imgs, det_size, mode='linear'):
+def resize_3d(imgs, det_size, mode="linear"):
     new_imgs = []
     for k in range(imgs.shape[0]):
         temp = imgs[k]
-        if mode == 'linear':
+        if mode == "linear":
             temp = cv2.resize(temp, (det_size, det_size), interpolation=cv2.INTER_LINEAR)
-        elif mode == 'nearest':
+        elif mode == "nearest":
             temp = cv2.resize(temp, (det_size, det_size), interpolation=cv2.INTER_NEAREST)
         else:
-            raise AttributeError('No this interpolation mode!')
+            raise AttributeError("No this interpolation mode!")
         new_imgs.append(temp)
     new_imgs = np.asarray(new_imgs)
     return new_imgs
 
 
-def add_gauss_noise(imgs, std=0.01, norm_mode='norm'):
+def add_gauss_noise(imgs, std=0.01, norm_mode="norm"):
     gaussian = np.random.normal(0, std, (imgs.shape))
     imgs = imgs + gaussian
-    if norm_mode == 'norm':
+    if norm_mode == "norm":
         imgs = (imgs - np.min(imgs)) / (np.max(imgs) - np.min(imgs))
-    elif norm_mode == 'trunc':
+    elif norm_mode == "trunc":
         imgs[imgs < 0] = 0
         imgs[imgs > 1] = 1
     else:
@@ -174,16 +184,18 @@ def add_intensity(imgs, contrast_factor=0.1, brightness_factor=0.1):
     return imgs
 
 
-def interp_5d(data, det_size, mode='bilinear'):
+def interp_5d(data, det_size, mode="bilinear"):
     assert len(data.shape) == 5, "the dimension of data must be 5!"
     out = []
     depth = data.shape[2]
     for k in range(depth):
         temp = data[:, :, k, :, :]
-        if mode == 'bilinear':
-            temp = F.interpolate(temp, size=(det_size, det_size), mode='bilinear', align_corners=True)
-        elif mode == 'nearest':
-            temp = F.interpolate(temp, size=(det_size, det_size), mode='nearest')
+        if mode == "bilinear":
+            temp = F.interpolate(
+                temp, size=(det_size, det_size), mode="bilinear", align_corners=True
+            )
+        elif mode == "nearest":
+            temp = F.interpolate(temp, size=(det_size, det_size), mode="nearest")
         out.append(temp)
     out = torch.stack(out, dim=2)
     return out
@@ -203,13 +215,17 @@ def convert_consistency_scale(gt, det_size):
             masks.append(mask)
         elif det_size_temp[0] > gt_temp.shape[-1]:
             shift = int((det_size_temp[0] - gt_temp.shape[-1]) // 2)
-            gt_padding = torch.zeros((1, C, D, int(det_size_temp[0]), int(det_size_temp[0]))).float().cuda()
+            gt_padding = (
+                torch.zeros((1, C, D, int(det_size_temp[0]), int(det_size_temp[0]))).float().cuda()
+            )
             mask = torch.zeros_like(gt_padding)
             gt_padding[0, :, :, shift:-shift, shift:-shift] = gt_temp
             mask[0, :, :, shift:-shift, shift:-shift] = 1
             # gt_padding = F.interpolate(gt_padding, size=(D, int(gt_temp.shape[-1]), int(gt_temp.shape[-1])), mode='trilinear', align_corners=True)
-            gt_padding = interp_5d(gt_padding, int(gt_temp.shape[-1]), mode='bilinear')
-            mask = F.interpolate(mask, size=(D, int(gt_temp.shape[-1]), int(gt_temp.shape[-1])), mode='nearest')
+            gt_padding = interp_5d(gt_padding, int(gt_temp.shape[-1]), mode="bilinear")
+            mask = F.interpolate(
+                mask, size=(D, int(gt_temp.shape[-1]), int(gt_temp.shape[-1])), mode="nearest"
+            )
             gt_padding = torch.squeeze(gt_padding, dim=0)
             mask = torch.squeeze(mask, dim=0)
             out_gt.append(gt_padding)
@@ -221,7 +237,7 @@ def convert_consistency_scale(gt, det_size):
             gt_padding = gt_temp[:, :, shift:-shift, shift:-shift]
             gt_padding = gt_padding[None, ...]
             # gt_padding = F.interpolate(gt_padding, size=(D, int(gt_temp.shape[-1]), int(gt_temp.shape[-1])), mode='trilinear', align_corners=True)
-            gt_padding = interp_5d(gt_padding, int(gt_temp.shape[-1]), mode='bilinear')
+            gt_padding = interp_5d(gt_padding, int(gt_temp.shape[-1]), mode="bilinear")
             gt_padding = torch.squeeze(gt_padding, dim=0)
             out_gt.append(gt_padding)
             masks.append(mask)
@@ -244,15 +260,15 @@ def convert_consistency_flip(gt, rules):
     return out_gt
 
 
-class Rescale(object):
-    def __init__(self, scale_factor=2, det_shape=[18, 160, 160]):
-        super(Rescale, self).__init__()
+class Rescale:
+    def __init__(self, scale_factor=2, det_shape=(18, 160, 160)):
+        super().__init__()
         self.scale_factor = scale_factor
         self.det_shape = det_shape
 
     def __call__(self, data):
         src_shape = data.shape
-        assert src_shape[-1] >= self.det_shape[-1] * self.scale_factor, 'data shape must be 160*2'
+        assert src_shape[-1] >= self.det_shape[-1] * self.scale_factor, "data shape must be 160*2"
         min_size = self.det_shape[-1] // self.scale_factor
         max_size = self.det_shape[-1] * self.scale_factor
         scale_size = random.randint(min_size // 2, max_size // 2)
@@ -261,13 +277,13 @@ class Rescale(object):
         if scale_size < src_shape[-1]:
             shift = (src_shape[-1] - scale_size) // 2
             data = data[:, shift:-shift, shift:-shift]
-        data = resize_3d(data, self.det_shape[-1], mode='linear')
+        data = resize_3d(data, self.det_shape[-1], mode="linear")
         return data, scale_size
 
 
-class Filp(object):
+class Filp:
     def __init__(self):
-        super(Filp, self).__init__()
+        super().__init__()
 
     def __call__(self, data):
         rule = np.random.randint(2, size=4)
@@ -297,21 +313,19 @@ class Filp(object):
 #         transformedimgs = np.clip(transformedimgs, 0, 1)
 #         transformedimgs **= 2.0**(ran[2]*2 - 1)
 
+
 #         return transformedimgs
-class Intensity(object):
-    def __init__(self, mode='mix',
-                 skip_ratio=0.5,
-                 CONTRAST_FACTOR=0.1,
-                 BRIGHTNESS_FACTOR=0.1):
-        '''Image intensity augmentation, including adjusting contrast and brightness
+class Intensity:
+    def __init__(self, mode="mix", skip_ratio=0.5, CONTRAST_FACTOR=0.1, BRIGHTNESS_FACTOR=0.1):
+        """Image intensity augmentation, including adjusting contrast and brightness
         Args:
             mode: '2D', '3D' or 'mix' (contains '2D' and '3D')
             skip_ratio: Probability of execution
             CONTRAST_FACTOR: Contrast factor
             BRIGHTNESS_FACTOR : Brightness factor
-        '''
-        super(Intensity, self).__init__()
-        assert mode == '3D' or mode == '2D' or mode == 'mix'
+        """
+        super().__init__()
+        assert mode == "3D" or mode == "2D" or mode == "mix"
         self.mode = mode
         self.ratio = skip_ratio
         self.CONTRAST_FACTOR = CONTRAST_FACTOR
@@ -323,15 +337,15 @@ class Intensity(object):
     def forward(self, inputs):
         inputs = inputs.copy()
         skiprand = np.random.rand()
-        if self.mode == 'mix':
+        if self.mode == "mix":
             # The probability of '2D' is more than '3D'
             threshold = 1 - (1 - self.ratio) / 2
-            mode_ = '3D' if skiprand > threshold else '2D'
+            mode_ = "3D" if skiprand > threshold else "2D"
         else:
             mode_ = self.mode
-        if mode_ == '2D':
+        if mode_ == "2D":
             inputs = self.augment2D(inputs)
-        elif mode_ == '3D':
+        elif mode_ == "3D":
             inputs = self.augment3D(inputs)
         inputs[inputs < 0] = 0
         inputs[inputs > 1] = 1
@@ -355,9 +369,9 @@ class Intensity(object):
         return imgs
 
 
-class GaussBlur(object):
+class GaussBlur:
     def __init__(self, min_kernel=3, max_kernel=9, min_sigma=0, max_sigma=2):
-        super(GaussBlur, self).__init__()
+        super().__init__()
         self.min_kernel = min_kernel
         self.max_kernel = max_kernel
         self.min_sigma = min_sigma
@@ -371,9 +385,9 @@ class GaussBlur(object):
         return data
 
 
-class GaussNoise(object):
-    def __init__(self, min_std=0.01, max_std=0.2, norm_mode='trunc'):
-        super(GaussNoise, self).__init__()
+class GaussNoise:
+    def __init__(self, min_std=0.01, max_std=0.2, norm_mode="trunc"):
+        super().__init__()
         self.min_std = min_std
         self.max_std = max_std
         self.norm_mode = norm_mode
@@ -384,12 +398,12 @@ class GaussNoise(object):
         return data
 
 
-class Cutout(object):
-    def __init__(self, model_type='superhuman'):
-        super(Cutout, self).__init__()
+class Cutout:
+    def __init__(self, model_type="superhuman"):
+        super().__init__()
         self.model_type = model_type
         # mask size
-        if self.model_type == 'mala':
+        if self.model_type == "mala":
             self.min_mask_size = [5, 5, 5]
             self.max_mask_size = [8, 12, 12]
             self.min_mask_counts = 40
@@ -406,19 +420,23 @@ class Cutout(object):
         mask_counts = random.randint(self.min_mask_counts, self.max_mask_counts)
         mask_size_z = random.randint(self.min_mask_size[0], self.max_mask_size[0])
         mask_size_xy = random.randint(self.min_mask_size[1], self.max_mask_size[1])
-        mask = gen_mask(data, net_crop_size=self.net_crop_size, \
-                        mask_counts=mask_counts, \
-                        mask_size_z=mask_size_z, \
-                        mask_size_xy=mask_size_xy)
+        mask = gen_mask(
+            data,
+            net_crop_size=self.net_crop_size,
+            mask_counts=mask_counts,
+            mask_size_z=mask_size_z,
+            mask_size_xy=mask_size_xy,
+        )
         data = data * mask
         return data
 
-class Cutout_P(object):
-    def __init__(self, model_type='superhuman'):
+
+class Cutout_P:
+    def __init__(self, model_type="superhuman"):
         super(Cutout, self).__init__()
         self.model_type = model_type
         # mask size
-        if self.model_type == 'mala':
+        if self.model_type == "mala":
             self.min_mask_size = [5, 5, 5]
             self.max_mask_size = [8, 12, 12]
             self.min_mask_counts = 40
@@ -435,16 +453,20 @@ class Cutout_P(object):
         mask_counts = random.randint(self.min_mask_counts, self.max_mask_counts)
         mask_size_z = random.randint(self.min_mask_size[0], self.max_mask_size[0])
         mask_size_xy = random.randint(self.min_mask_size[1], self.max_mask_size[1])
-        mask = gen_mask(data, net_crop_size=self.net_crop_size, \
-                        mask_counts=mask_counts, \
-                        mask_size_z=mask_size_z, \
-                        mask_size_xy=mask_size_xy)
+        mask = gen_mask(
+            data,
+            net_crop_size=self.net_crop_size,
+            mask_counts=mask_counts,
+            mask_size_z=mask_size_z,
+            mask_size_xy=mask_size_xy,
+        )
         data = data * mask
         return data
-    
-class SobelFilter(object):
+
+
+class SobelFilter:
     def __init__(self, if_mean=False):
-        super(SobelFilter, self).__init__()
+        super().__init__()
         self.if_mean = if_mean
 
     def __call__(self, data):
@@ -452,9 +474,9 @@ class SobelFilter(object):
         return data
 
 
-class Mixup(object):
+class Mixup:
     def __init__(self, min_alpha=0.01, max_alpha=0.1):
-        super(Mixup, self).__init__()
+        super().__init__()
         self.min_alpha = min_alpha
         self.max_alpha = max_alpha
 
@@ -466,17 +488,19 @@ class Mixup(object):
         return data
 
 
-class Missing(object):
-    '''Missing section augmentation
+class Missing:
+    """Missing section augmentation
     Args:
         filling: the way of filling, 'zero' or 'random'
         mode: 'mix', 'fully' or 'partially'
         skip_ratio: Probability of execution
         miss_ratio: Probability of missing
-    '''
+    """
 
-    def __init__(self, filling='zero', mode='mix', skip_ratio=0.5, miss_fully_ratio=0.2, miss_part_ratio=0.5):
-        super(Missing, self).__init__()
+    def __init__(
+        self, filling="zero", mode="mix", skip_ratio=0.5, miss_fully_ratio=0.2, miss_part_ratio=0.5
+    ):
+        super().__init__()
         self.filling = filling
         self.mode = mode
         self.ratio = skip_ratio
@@ -488,14 +512,14 @@ class Missing(object):
 
     def forward(self, imgs):
         imgs = imgs.copy()
-        if self.mode == 'mix':
+        if self.mode == "mix":
             r = np.random.rand()
-            mode_ = 'fully' if r < 0.5 else 'partially'
+            mode_ = "fully" if r < 0.5 else "partially"
         else:
             mode_ = self.mode
-        if mode_ == 'fully':
+        if mode_ == "fully":
             imgs = self.augment_fully(imgs)
-        elif mode_ == 'partially':
+        elif mode_ == "partially":
             imgs = self.augment_partially(imgs)
         return imgs
 
@@ -503,9 +527,9 @@ class Missing(object):
         d, h, w = imgs.shape
         for i in range(d):
             if np.random.rand() < self.miss_fully_ratio:
-                if self.filling == 'zero':
+                if self.filling == "zero":
                     imgs[i] = 0
-                elif self.filling == 'random':
+                elif self.filling == "random":
                     imgs[i] = np.random.rand(h, w)
         return imgs
 
@@ -518,23 +542,25 @@ class Missing(object):
                 sub_w = random.randint(int(w * size_ratio), int(w * (1 - size_ratio)))
                 start_h = random.randint(0, h - sub_h - 1)
                 start_w = random.randint(0, w - sub_w - 1)
-                if self.filling == 'zero':
-                    imgs[i, start_h:start_h + sub_h, start_w:start_w + sub_w] = 0
-                elif self.filling == 'random':
-                    imgs[i, start_h:start_h + sub_h, start_w:start_w + sub_w] = np.random.rand(sub_h, sub_w)
+                if self.filling == "zero":
+                    imgs[i, start_h : start_h + sub_h, start_w : start_w + sub_w] = 0
+                elif self.filling == "random":
+                    imgs[i, start_h : start_h + sub_h, start_w : start_w + sub_w] = np.random.rand(
+                        sub_h, sub_w
+                    )
         return imgs
 
 
-class BlurEnhanced(object):
-    '''Out-of-focus (Blur) section augmentation
+class BlurEnhanced:
+    """Out-of-focus (Blur) section augmentation
     Args:
         mode: 'mix', 'fully' or 'partially'
         skip_ratio: Probability of execution
         blur_ratio: Probability of blur
-    '''
+    """
 
-    def __init__(self, mode='mix', skip_ratio=0.5, blur_fully_ratio=0.5, blur_part_ratio=0.7):
-        super(BlurEnhanced, self).__init__()
+    def __init__(self, mode="mix", skip_ratio=0.5, blur_fully_ratio=0.5, blur_part_ratio=0.7):
+        super().__init__()
         self.mode = mode
         self.ratio = skip_ratio
         self.blur_fully_ratio = blur_fully_ratio
@@ -545,14 +571,14 @@ class BlurEnhanced(object):
 
     def forward(self, imgs):
         imgs = imgs.copy()
-        if self.mode == 'mix':
+        if self.mode == "mix":
             r = np.random.rand()
-            mode_ = 'fully' if r < 0.5 else 'partially'
+            mode_ = "fully" if r < 0.5 else "partially"
         else:
             mode_ = self.mode
-        if mode_ == 'fully':
+        if mode_ == "fully":
             imgs = self.augment_fully(imgs)
-        elif mode_ == 'partially':
+        elif mode_ == "partially":
             imgs = self.augment_partially(imgs)
         return imgs
 
@@ -574,13 +600,14 @@ class BlurEnhanced(object):
                 start_h = random.randint(0, h - sub_h - 1)
                 start_w = random.randint(0, w - sub_w - 1)
                 sigma = np.random.uniform(0, 5)
-                imgs[i, start_h:start_h + sub_h, start_w:start_w + sub_w] = \
-                    gaussian_filter(imgs[i, start_h:start_h + sub_h, start_w:start_w + sub_w], sigma)
+                imgs[i, start_h : start_h + sub_h, start_w : start_w + sub_w] = gaussian_filter(
+                    imgs[i, start_h : start_h + sub_h, start_w : start_w + sub_w], sigma
+                )
         return imgs
 
 
-class Elastic(object):
-    '''Elasticly deform a batch. Requests larger batches upstream to avoid data
+class Elastic:
+    """Elasticly deform a batch. Requests larger batches upstream to avoid data
     loss due to rotation and jitter.
     Args:
         control_point_spacing (``tuple`` of ``int``):
@@ -607,20 +634,21 @@ class Elastic(object):
             piecewise linear deformations for large factors. Usually, a factor
             of 4 can savely by used without noticable changes. However, the
             default is 1 (i.e., no subsampling).
-    '''
+    """
 
     def __init__(
-            self,
-            control_point_spacing=[4, 40, 40],
-            jitter_sigma=[0, 0, 0],  # recommend: [0, 2, 2]
-            rotation_interval=[0, 0],
-            prob_slip=0,  # recommend: 0.05
-            prob_shift=0,  # recommend: 0.05
-            max_misalign=0,  # 17 in superhuman
-            subsample=1,
-            padding=None,
-            skip_ratio=0.5):  # recommend: 10
-        super(Elastic, self).__init__()
+        self,
+        control_point_spacing=(4, 40, 40),
+        jitter_sigma=(0, 0, 0),  # recommend: [0, 2, 2]
+        rotation_interval=(0, 0),
+        prob_slip=0,  # recommend: 0.05
+        prob_shift=0,  # recommend: 0.05
+        max_misalign=0,  # 17 in superhuman
+        subsample=1,
+        padding=None,
+        skip_ratio=0.5,
+    ):  # recommend: 10
+        super().__init__()
 
         self.control_point_spacing = control_point_spacing
         self.jitter_sigma = jitter_sigma
@@ -634,9 +662,7 @@ class Elastic(object):
         self.ratio = skip_ratio
 
     def create_transformation(self, target_shape):
-        transformation = create_identity_transformation(
-            target_shape,
-            subsample=self.subsample)
+        transformation = create_identity_transformation(target_shape, subsample=self.subsample)
         # shape: channel,d,w,h
 
         # elastic  ##cost time##
@@ -645,7 +671,8 @@ class Elastic(object):
                 target_shape,
                 self.control_point_spacing,
                 self.jitter_sigma,
-                subsample=self.subsample)
+                subsample=self.subsample,
+            )
 
         # rotation = random.random()*self.rotation_max_amount + self.rotation_start
         # if rotation != 0:
@@ -660,8 +687,7 @@ class Elastic(object):
         #         tuple(target_shape))
 
         if self.prob_slip + self.prob_shift > 0:
-            misalign(transformation, self.prob_slip,
-                     self.prob_shift, self.max_misalign)
+            misalign(transformation, self.prob_slip, self.prob_shift, self.max_misalign)
 
         return transformation
 
@@ -669,31 +695,37 @@ class Elastic(object):
         return self.forward(imgs)
 
     def forward(self, imgs):
-        '''Args:
-            imgs: numpy array, [Z, Y, Z], it always is float and 0~1
-            mask: numpy array, [Z, Y, Z], it always is uint16
-        '''
+        """Args:
+        imgs: numpy array, [Z, Y, Z], it always is float and 0~1
+        mask: numpy array, [Z, Y, Z], it always is uint16
+        """
         imgs = imgs.copy()
         if self.padding is not None:
-            imgs = np.pad(imgs, ((0, 0), \
-                                 (self.padding, self.padding), \
-                                 (self.padding, self.padding)), mode='reflect')
+            imgs = np.pad(
+                imgs,
+                ((0, 0), (self.padding, self.padding), (self.padding, self.padding)),
+                mode="reflect",
+            )
         transform = self.create_transformation(imgs.shape)
-        img_transform = apply_transformation(imgs,
-                                             transform,
-                                             interpolate=False,
-                                             outside_value=0,  # imgs.dtype.type(-1)
-                                             output=np.zeros(imgs.shape, dtype=np.float32))
+        img_transform = apply_transformation(
+            imgs,
+            transform,
+            interpolate=False,
+            outside_value=0,  # imgs.dtype.type(-1)
+            output=np.zeros(imgs.shape, dtype=np.float32),
+        )
         # seg_transform[seg_transform < 0] = 0
         # seg_transform[seg_transform > 60000] = 0
         if self.padding is not None and self.padding != 0:
-            img_transform = img_transform[:, self.padding:-self.padding, self.padding:-self.padding]
+            img_transform = img_transform[
+                :, self.padding : -self.padding, self.padding : -self.padding
+            ]
         return img_transform
 
 
-class Artifact(object):
+class Artifact:
     def __init__(self, min_sec=1, max_sec=5):
-        super(Artifact, self).__init__()
+        super().__init__()
         self.min_sec = min_sec
         self.max_sec = max_sec
         self.offset = 40
@@ -711,7 +743,7 @@ class Artifact(object):
         return data
 
     def degradation(self, img):
-        img = np.pad(img, ((self.offset, self.offset), (self.offset, self.offset)), mode='reflect')
+        img = np.pad(img, ((self.offset, self.offset), (self.offset, self.offset)), mode="reflect")
         height, width = img.shape
         line_width = random.randint(5, 10)
         fold_width = random.randint(line_width + 1, 40)
@@ -756,8 +788,8 @@ class Artifact(object):
         k, b = gen_line(p1, p2)
         flow, flow2, mask = gen_flow(height, width, k, b, line_width, fold_width, dis_k)
 
-        deformed = image_warp(img, flow, mode='bilinear')  # nearest or bilinear
+        deformed = image_warp(img, flow, mode="bilinear")  # nearest or bilinear
         deformed = (deformed * mask).astype(np.uint8)
-        deformed = deformed[self.offset:-self.offset, self.offset:-self.offset]
+        deformed = deformed[self.offset : -self.offset, self.offset : -self.offset]
 
         return deformed

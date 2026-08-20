@@ -1,0 +1,19 @@
+[tool.ruff]
+target-version = "py38"
+line-length = 100
+extend-exclude = ["legacy", "**/__pycache__/**"]
+
+[tool.ruff.lint]
+# Keep the enforced baseline deliberately conservative: syntax/import errors,
+# undefined or unused names, bare exceptions, and mutable defaults. Broader
+# modernization rules are reported in CODE_QUALITY_REPORT.md but are not
+# auto-applied because this is scientific legacy code.
+select = ["E4", "E7", "E9", "F", "I", "B006"]
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

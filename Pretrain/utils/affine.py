@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def identity_xf(N):
     """
     Construct N identity 2x3 transformation matrices
@@ -26,6 +27,7 @@ def inv_nx2x2(X):
     y[:, 1, 0] = -X[:, 1, 0] * rdet
     return y
 
+
 def inv_nx2x3(m):
     """
     Invert the N 2x3 transformation matrices stored in X; a (N,2,3) array
@@ -38,6 +40,7 @@ def inv_nx2x3(m):
     m2inv = inv_nx2x2(m2)
     mxinv = np.matmul(m2inv, -mx)
     return np.append(m2inv, mxinv, axis=2)
+
 
 def cat_nx2x3_2(a, b):
     """
@@ -57,6 +60,7 @@ def cat_nx2x3_2(a, b):
     abx = ax + np.matmul(a2, bx)
     return np.append(ab2, abx, axis=2)
 
+
 def cat_nx2x3(*x):
     """
     Multiply the N 2x3 transformations stored in the arrays in `x`
@@ -68,6 +72,7 @@ def cat_nx2x3(*x):
     for i in range(1, len(x)):
         y = cat_nx2x3_2(y, x[i])
     return y
+
 
 def translation_matrices(xlats_xy):
     """
@@ -82,6 +87,7 @@ def translation_matrices(xlats_xy):
     xf[:, :, 2] = xlats_xy
     return xf
 
+
 def scale_matrices(scale_xy):
     """
     Generate translation matrices
@@ -94,6 +100,7 @@ def scale_matrices(scale_xy):
     xf[:, 0, 0] = scale_xy[:, 0]
     xf[:, 1, 1] = scale_xy[:, 1]
     return xf
+
 
 def rotation_matrices(thetas):
     """
@@ -119,6 +126,7 @@ def rotation_matrices(thetas):
     rot_xf[:, 0, 1] = s
     return rot_xf
 
+
 def flip_xyd_matrices(flip_flags_xyd, image_size):
     """
     Generate flip matrices in OpenCV compatible form. Each sample has three flags: `x`, `y` and `d`:
@@ -131,9 +139,13 @@ def flip_xyd_matrices(flip_flags_xyd, image_size):
     :return: flip matrices, (N,2,3) array
     """
     if flip_flags_xyd.ndim != 2:
-        raise ValueError('flip_flags_xyd should have 2 dimensions, not {}'.format(flip_flags_xyd.ndim))
+        raise ValueError(
+            "flip_flags_xyd should have 2 dimensions, not {}".format(flip_flags_xyd.ndim)
+        )
     if flip_flags_xyd.shape[1] != 3:
-        raise ValueError('flip_flags_xyd.shape[1] should be 3 dimensions, not {}'.format(flip_flags_xyd.shape[1]))
+        raise ValueError(
+            "flip_flags_xyd.shape[1] should be 3 dimensions, not {}".format(flip_flags_xyd.shape[1])
+        )
 
     # False -> 1, True -> -1
     flip_scale_xy = flip_flags_xyd[:, :2] * -2 + 1
@@ -152,7 +164,6 @@ def flip_xyd_matrices(flip_flags_xyd, image_size):
         translation_matrices(flip_xlat_xy),
         scale_matrices(flip_scale_xy),
     )
-
 
 
 def centre_xf(xf, size):

@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/yanchaoz/SegNeuron",
+  "commit": "659ce323acf2c4cc62e697a03c5d90fc809aa9b7",
+  "legacy_branch": "legacy/upstream-659ce323",
+  "captured_at": "2026-08-18",
+  "reference_sha256": {
+    "Pretrain/model/Mnet_pretrain.py": "107415754421d80934dda7c66420c4bb826a0884f3395561688e677a15755555",
+    "Train_and_Inference/model/Mnet.py": "970dc71a1158db8c019123258f1657968fc55fdef1a365d070b1e2ed4de0b0b1"
+  },
+  "policy": "The legacy branch is immutable. Stabilization changes live outside it."
+}

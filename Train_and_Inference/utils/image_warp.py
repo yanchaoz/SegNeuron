@@ -1,6 +1,7 @@
 import numpy as np
 
-def image_warp(im, flow, mode='bilinear'):
+
+def image_warp(im, flow, mode="bilinear"):
     """Performs a backward warp of an image using the predicted flow.
     numpy version
 
@@ -30,7 +31,7 @@ def image_warp(im, flow, mode='bilinear'):
         num_batch, height, width, channels = im.shape
         flag = 4
     else:
-        raise AttributeError('The dimension of im must be 2, 3 or 4')
+        raise AttributeError("The dimension of im must be 2, 3 or 4")
 
     max_x = width - 1
     max_y = height - 1
@@ -64,10 +65,10 @@ def image_warp(im, flow, mode='bilinear'):
 
     base_y0 = base + y0 * width
 
-    if mode == 'nearest':
+    if mode == "nearest":
         idx_a = base_y0 + x0
         warped_flat = im_flat[idx_a]
-    elif mode == 'bilinear':
+    elif mode == "bilinear":
         # The fractional part is used to control the bilinear interpolation.
         bilinear_weights = flow_flat - np.floor(flow_flat)
 
@@ -76,10 +77,10 @@ def image_warp(im, flow, mode='bilinear'):
 
         # Compute interpolation weights for 4 adjacent pixels
         # expand to num_batch * height * width x 1 for broadcasting in add_n below
-        wa = np.expand_dims((1 - xw) * (1 - yw), 1) # top left pixel
-        wb = np.expand_dims((1 - xw) * yw, 1) # bottom left pixel
-        wc = np.expand_dims(xw * (1 - yw), 1) # top right pixel
-        wd = np.expand_dims(xw * yw, 1) # bottom right pixel
+        wa = np.expand_dims((1 - xw) * (1 - yw), 1)  # top left pixel
+        wb = np.expand_dims((1 - xw) * yw, 1)  # bottom left pixel
+        wc = np.expand_dims(xw * (1 - yw), 1)  # top right pixel
+        wd = np.expand_dims(xw * yw, 1)  # bottom right pixel
 
         x1 = x0 + 1
         y1 = y0 + 1
