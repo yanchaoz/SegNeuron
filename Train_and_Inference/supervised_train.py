@@ -152,9 +152,9 @@ def loop(cfg, train_provider, model, optimizer, iters, writer):
     sum_labeled_loss = 0
 
     if cfg.TRAIN.loss_func == 'MSELoss':
-        criterion = WeightedBCE()
-    elif cfg.TRAIN.loss_func == 'BCELoss':
         criterion = WeightedMSE()
+    elif cfg.TRAIN.loss_func == 'BCELoss':
+        criterion = WeightedBCE()
     else:
         raise AttributeError("NO this criterion")
 
