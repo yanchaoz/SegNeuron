@@ -1,0 +1,2 @@
+# Keep the archived bytes (including historical line endings) unchanged.
+/legacy/** -text -whitespace linguist-vendored

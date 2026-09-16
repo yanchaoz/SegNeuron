@@ -1,0 +1,14 @@
+# Linux environment for the original ELF/nifty/vigra FRMC backend.
+# ELF >=0.9 uses a different C++ backend; keep this workflow on 0.8.1.
+name: segneuron-postprocess
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.10
+  - python-elf=0.8.1
+  - nifty
+  - vigra
+  - numpy>=1.24,<2
+  - tifffile>=2023.7.10
+  - scikit-image>=0.20,<1

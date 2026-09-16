@@ -1,6 +1,7 @@
 NAME: 'SegNeuron'
 
 MODEL:
+  model_type: 'superhuman'  # Same-size prediction; disable the legacy MALA crop.
   pre_train: True
   pretrain_path: '/***/***'
   continue_train: False

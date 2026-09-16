@@ -41,7 +41,7 @@ class Train(Dataset):
 
     def __getitem__(self, index):
 
-        k = random.randint(0, len(self.dataset))
+        k = random.randrange(len(self.dataset))
         used_data = self.dataset[k]
         raw_data_shape = used_data.shape
 

@@ -4,15 +4,13 @@ from __future__ import division
 
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "0, 1"
-
 import sys
 import yaml
 import time
 import logging
 import argparse
 import numpy as np
-from attrdict import AttrDict
+from addict import Dict as AttrDict
 from tensorboardX import SummaryWriter
 from collections import OrderedDict
 import torch
@@ -73,7 +71,7 @@ def load_dataset(cfg):
     t1 = time.time()
     train_provider = Provider('train', cfg)
     print('Done (time: %.2fs)' % (time.time() - t1))
-    return train_provider, valid_provider
+    return train_provider
 
 
 def build_model(cfg, writer):
@@ -158,7 +156,7 @@ def loop(cfg, train_provider, model, optimizer, iters, writer):
     else:
         raise AttributeError("NO this criterion")
 
-    while iters <= cfg.TRAIN.total_iters:
+    while iters < cfg.TRAIN.total_iters:
         # train
         model.train()
         iters += 1
@@ -254,12 +252,12 @@ if __name__ == "__main__":
 
     if args.mode == 'train':
         writer = init_project(cfg)
-        train_provider, valid_provider = load_dataset(cfg)
+        train_provider = load_dataset(cfg)
         model = build_model(cfg, writer)
         optimizer = torch.optim.Adam(model.parameters(), lr=cfg.TRAIN.base_lr, betas=(0.9, 0.999),
                                      eps=0.01, weight_decay=1e-6, amsgrad=True)
         init_iters = 0
-        loop(cfg, train_provider, valid_provider, model, optimizer, init_iters, writer)
+        loop(cfg, train_provider, model, optimizer, init_iters, writer)
         writer.close()
     else:
         pass
