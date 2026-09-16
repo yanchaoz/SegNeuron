@@ -21,6 +21,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PostprocessTests(unittest.TestCase):
+    def test_tiff_axes_are_not_silently_reinterpreted(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "head.tif"
+            tifffile.imwrite(path, np.zeros((4, 8, 9), dtype=np.float32),
+                             photometric="minisblack", metadata={"axes": "YZX"})
+            with self.assertRaisesRegex(ValueError, "ZYX"):
+                post._load_volume(path)
+
     def test_help_does_not_import_elf(self):
         code = (
             "import sys; sys.modules['elf'] = None; "

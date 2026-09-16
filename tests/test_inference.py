@@ -85,6 +85,9 @@ class InferenceTests(unittest.TestCase):
             tifffile.imwrite(path, np.zeros((4, 8, 9), np.uint8), photometric="minisblack", metadata={"axes": "TYX"})
             with self.assertRaisesRegex(ValueError, "grayscale"):
                 inference.load_volume(path)
+            tifffile.imwrite(path, np.zeros((4, 8, 9), np.uint8), photometric="minisblack", metadata={"axes": "YZX"})
+            with self.assertRaisesRegex(ValueError, "grayscale"):
+                inference.load_volume(path)
 
     def test_checkpoint_formats_and_dataparallel_prefix(self):
         source = torch.nn.Conv3d(1, 1, 1)

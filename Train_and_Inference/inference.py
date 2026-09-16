@@ -24,7 +24,7 @@ def load_volume(path):
         import tifffile
 
         with tifffile.TiffFile(path) as image:
-            if len(image.series) != 1 or any(axis in image.series[0].axes for axis in "CST"):
+            if len(image.series) != 1 or image.series[0].axes not in {"ZYX", "QYX", "IYX"}:
                 raise ValueError("TIFF must contain one grayscale ZYX stack, without color, channel or time axes")
             volume = image.series[0].asarray()
     else:
@@ -152,7 +152,7 @@ def sha256(path):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True, type=Path, help="uint8 3D ZYX TIFF or NPY raw volume")
-    parser.add_argument("--checkpoint", required=True, type=Path, help="MNet checkpoint (.pth or .pt)")
+    parser.add_argument("--checkpoint", required=True, type=Path, help="MNet checkpoint (.ckpt, .pth or .pt)")
     parser.add_argument("--output-dir", required=True, type=Path, help="New directory; existing paths are refused")
     parser.add_argument("--device", default="cpu", help="cpu (default) or cuda:N, e.g. cuda:0")
     args = parser.parse_args(argv)

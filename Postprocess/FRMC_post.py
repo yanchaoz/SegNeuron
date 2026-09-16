@@ -93,7 +93,10 @@ def _load_volume(path):
         return np.load(path, allow_pickle=False)
     if path.suffix.lower() in (".tif", ".tiff"):
         import tifffile
-        return tifffile.imread(path)
+        with tifffile.TiffFile(path) as image:
+            if len(image.series) != 1 or image.series[0].axes not in {"ZYX", "QYX", "IYX"}:
+                raise ValueError("TIFF must contain one grayscale ZYX stack")
+            return image.series[0].asarray()
     raise ValueError(f"Expected .npy, .tif or .tiff: {path}")
 
 
