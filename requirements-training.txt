@@ -1,0 +1,13 @@
+# Additional dependencies for the original CUDA research training entry points.
+-r requirements.txt
+numpy>=1.24,<2
+addict==2.4.0
+PyYAML>=6,<7
+tensorboardX>=2.6,<3
+einops>=0.8,<1
+imageio>=2.31,<3
+Pillow>=9.5
+scipy>=1.10,<2
+scikit-image>=0.20,<1
+opencv-python-headless>=4.7,<4.12
+matplotlib>=3.7,<4

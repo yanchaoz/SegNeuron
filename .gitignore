@@ -1,0 +1,7 @@
+/Train_and_Inference/**/__pycache__/
+/Pretrain/**/__pycache__/
+/Postprocess/__pycache__/
+/tests/__pycache__/
+/runs/
+/weights/
+/.venv/

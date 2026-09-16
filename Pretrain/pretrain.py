@@ -4,14 +4,13 @@ from __future__ import division
 
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "0, 1"
 import sys
 import yaml
 import time
 import logging
 import argparse
 import numpy as np
-from attrdict import AttrDict
+from addict import Dict as AttrDict
 from tensorboardX import SummaryWriter
 from collections import OrderedDict
 import torch
@@ -78,7 +77,7 @@ def load_dataset(cfg):
     t1 = time.time()
     train_provider = Provider('train', cfg)
     print('Done (time: %.2fs)' % (time.time() - t1))
-    return train_provider, valid_provider
+    return train_provider
 
 
 def build_model(cfg, writer):
@@ -154,7 +153,7 @@ def loop(cfg, train_provider, model, optimizer, iters, writer):
     sum_labeled_loss = 0
     sum_unlabel_loss = 0
 
-    while iters <= cfg.TRAIN.total_iters:
+    while iters < cfg.TRAIN.total_iters:
         # train
         model.train()
         iters += 1
